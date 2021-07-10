@@ -20,7 +20,7 @@ public class EchoTCPClienteProtocol {
 		System.out.print("Ingrese su nombre: ");
 		String fromUser = SCANNER.nextLine();
 		
-		String mensaje = fromUser ;
+		String mensaje ="LOGIN "+" " + fromUser ;
 		
 		toNerwork.println(mensaje);
 		
