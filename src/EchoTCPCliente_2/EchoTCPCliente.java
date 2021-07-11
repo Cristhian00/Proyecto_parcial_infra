@@ -11,15 +11,13 @@ public class EchoTCPCliente {
 	
 	public EchoTCPCliente() {
 		System.out.println("Echo TCP Cliente..");
-		
 	}
 	
 	
 	public void init() throws Exception{
+		
 		clienteSideSocket = new  Socket(SERVER,PORT);
-		
 		EchoTCPClienteProtocol.protocol(clienteSideSocket);
-		
 		clienteSideSocket.close();
 	}
 

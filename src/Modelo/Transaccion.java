@@ -4,9 +4,8 @@ import java.util.Date;
 
 public class Transaccion {
 	private String nombre;
-	private Date fecha ;
-	
-	
+	private Date fecha;
+
 	public Transaccion(String nombre, Date fecha) {
 		super();
 		this.nombre = nombre;
@@ -28,8 +27,5 @@ public class Transaccion {
 	public void setFecha(Date fecha) {
 		this.fecha = fecha;
 	}
-	
-	
-	
 
 }
