@@ -139,6 +139,7 @@ public class Banco {
 
 	public void crearCuenta(CuentaAhorro cuenta) {
 		listaCuentaAhorros.add(cuenta);
+		numeroCuenta += 1;
 	}
 
 	public void eliminarCuenta(CuentaAhorro cuenta) {

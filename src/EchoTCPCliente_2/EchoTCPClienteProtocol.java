@@ -7,6 +7,8 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Scanner;
 
+import javax.swing.JOptionPane;
+
 public class EchoTCPClienteProtocol {
 	
 	private static final Scanner SCANNER =new Scanner(System.in);
@@ -17,15 +19,77 @@ public class EchoTCPClienteProtocol {
 	public static void protocol(Socket socket) throws Exception {
 		createStreams(socket);
 		
-		System.out.print("Ingrese su nombre: ");
-		String fromUser = SCANNER.nextLine();
 		
-		String mensaje = "LOGIN "+" " + fromUser ;
 		
-		toNerwork.println(mensaje);
+		String menu = "    " + "MI BANCO" + "\n" + "Ingrese la opción que desea ejecutar" + "\n" + "1.Abrir cuenta" + "\n"
+				+ "2.Crear bolsillo" + "\n" + "3.Cancelar bolsillo" + "\n" + "4.Cancelar cuenta" + "\n"
+				+ "5.Depositar dinero en una cuenta" + "\n" + "6.Retirar dinero" + "\n"
+				+ "7.Trasladar dinero a un bolsillo" + "\n" + "8.Consultar saldo" + "\n"
+				+ "9.Cargar datos automaticos";
+
+		int res;
+		int confir = 0;
+		String operacion = "";
+		String fromUser = "";
+
+		do {
+			res = Integer.parseInt(JOptionPane.showInputDialog(menu));
+
+			switch (res) {
+
+			case 1:
+				fromUser = JOptionPane.showInputDialog("Escriba su nombre completo:");
+				operacion = "ABRIR_CUENTA," + fromUser;
+				break;
+			case 2:
+				fromUser = JOptionPane.showInputDialog("Escriba su número de cuenta de ahorro:");
+				operacion = "ABRIR_BOLSILLO," + fromUser;
+				break;
+			case 3:
+				fromUser = JOptionPane.showInputDialog("Escriba el número de cuenta del bolsillo que desea cancelar");
+				operacion = "CANCELAR_BOLSILLO," + fromUser;
+				break;
+			case 4:
+				fromUser = JOptionPane.showInputDialog("Escriba el número de cuenta de ahorros a cancelar:");
+				operacion = "CANCELAR_CUENTA," + fromUser;
+				break;
+			case 5:
+				fromUser = JOptionPane.showInputDialog("Escriba su número de cuenta de ahorro:") + ",";
+				fromUser += JOptionPane.showInputDialog("Escriba el valor que desea depositar:");
+				operacion = "DEPOSITAR," + fromUser;
+				break;
+			case 6:
+				fromUser = JOptionPane.showInputDialog("Escriba su número de cuenta de ahorro:") + ",";
+				fromUser += JOptionPane.showInputDialog("Escriba el valor que desea retirar:");
+				operacion = "RETIRAR," + fromUser;
+				break;
+			case 7:
+				fromUser = JOptionPane.showInputDialog("Escriba su número de cuenta de ahorro:") + ",";
+				fromUser += JOptionPane.showInputDialog("Escriba el valor que desea trasladar:");
+				operacion = "TRASLADAR," + fromUser;
+				break;
+			case 8:
+				fromUser = JOptionPane.showInputDialog("Escriba su número de la cuenta:");
+				operacion = "CONSULTAR," + fromUser;
+				break;
+			case 9:
+				fromUser = JOptionPane.showInputDialog("Escriba nombre archivo");
+				operacion = "CARGA,";
+				break;
+			default:
+				JOptionPane.showMessageDialog(null, "La opción que selecciono no existe");
+				break;
+			}
+			
+			toNerwork.println(operacion);
+			
+			String fromServer = fromNetwork.readLine();
+			System.out.println("[Client] from server:"+ fromServer);
+
+			confir = JOptionPane.showConfirmDialog(null, "¿Desea realizar otra operación?");
+
+		} while (confir == 0);
 		
-		String fromServer = fromNetwork.readLine();
-		System.out.println("[Client] from server:"+ fromServer);
 	}
 	
 	private static void createStreams (Socket socket) throws Exception {

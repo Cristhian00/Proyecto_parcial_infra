@@ -7,6 +7,14 @@ import Modelo.CuentaAhorro;
 public class Controlador {
 
 	private Banco miBanco;
+	
+	public Controlador() {
+		miBanco = new Banco();
+	}
+	
+	public int numeroCuentaNueva() {
+		return miBanco.getNumeroCuenta();
+	}
 
 	public boolean buscarCliente(String nombre) {
 		boolean centinela = false;
