@@ -7,6 +7,7 @@ import java.io.PrintWriter;
 import java.net.Socket;
 
 import Controlador.Controlador;
+import Modelo.Bolsillo;
 import Modelo.CuentaAhorro;
 
 public class EchoTCPServerProtocol {
@@ -17,20 +18,23 @@ public class EchoTCPServerProtocol {
 
 	public static void protocol(Socket socket) throws IOException {
 		createStreams(socket);
-
 		String message = fromNetwork.readLine();
-		System.out.println("mensaje cliente -> " + message);
+		System.out.println("[SERVER] from client: " + message);
 		String answer = "";
 
 		String[] transaccion = message.split(",");
 		String operacion = transaccion[0];
+
+		String numCuenta = "";
+		String numBolsillo = "";
+		double valor = 0.0;
+		double saldo = 0.0;
 
 		switch (operacion) {
 		case "ABRIR_CUENTA":
 			String usuario = transaccion[1];
 			CuentaAhorro cuenta = new CuentaAhorro(usuario);
 			cuenta.setNumCuenta(controlador.numeroCuentaNueva() + "");
-			System.out.println(cuenta.getNumCuenta());
 			try {
 				controlador.crearCuenta(cuenta);
 				answer = "La cuenta se creo correctamente";
@@ -40,25 +44,84 @@ public class EchoTCPServerProtocol {
 			}
 			break;
 		case "ABRIR_BOLSILLO":
+			numCuenta = transaccion[1];
+			Bolsillo bolsillo = new Bolsillo(numCuenta);
+			try {
+				controlador.crearBolsillo(bolsillo, numCuenta);
+				answer = "El bolsillo se creo correctamente";
+			} catch (Exception e) {
+				e.printStackTrace();
+				answer = e.toString();
+			}
 			break;
 		case "CANCELAR_BOLSILLO":
+			numBolsillo = transaccion[1];
+			numCuenta = numBolsillo.substring(0, numBolsillo.length() - 1);
+			try {
+				controlador.eliminarBolsillo(numCuenta, numBolsillo);
+				answer = "El bolsillo se ha eliminado correctamente";
+			} catch (Exception e) {
+				e.printStackTrace();
+				answer = e.toString();
+			}
 			break;
 		case "CANCELAR_CUENTA":
+			numCuenta = transaccion[1];
+			try {
+				controlador.eliminarCuenta(numCuenta);
+				answer = "La cuenta se ha eliminado correctamente";
+			} catch (Exception e) {
+				e.printStackTrace();
+				answer = e.toString();
+			}
 			break;
 		case "DEPOSITAR":
+			numCuenta = transaccion[1];
+			valor = Double.parseDouble(transaccion[2]);
+			try {
+				controlador.depositarDinero(numCuenta, valor);
+				answer = "El dinero se a depositado correctamente";
+			} catch (Exception e) {
+				e.printStackTrace();
+				answer = e.toString();
+			}
 			break;
 		case "RETIRAR":
+			numCuenta = transaccion[1];
+			valor = Double.parseDouble(transaccion[2]);
+			try {
+				controlador.retirarDineroCuenta(numCuenta, valor);
+				answer = "El dinero se a retirado correctamente";
+			} catch (Exception e) {
+				e.printStackTrace();
+				answer = e.toString();
+			}
 			break;
 		case "TRASLADAR":
+			numCuenta = transaccion[1];
+			valor = Double.parseDouble(transaccion[2]);
+			try {
+				controlador.trasladarDineroBolsillo(numCuenta, valor);
+				answer = "El dinero se a trasladado al bolsillo correctamente";
+			} catch (Exception e) {
+				e.printStackTrace();
+				answer = e.toString();
+			}
 			break;
 		case "CONSULTAR":
+			numCuenta = transaccion[1];
+			try {
+				saldo = controlador.consultarSaldo(numCuenta);
+				answer = "El saldo de la cuenta " + numCuenta + " es de " + saldo;
+			} catch (Exception e) {
+				e.printStackTrace();
+				answer = e.toString();
+			}
 			break;
 		case "CARGA":
 		default:
 			break;
 		}
-
-		System.out.println("[Server] from client:" + message);
 
 		toNetwork.println(answer);
 	}
