@@ -40,7 +40,6 @@ public class EchoTCPServerProtocol{
 				controlador.crearCuenta(cuenta);
 				answer = "La cuenta se creo correctamente";
 			} catch (Exception e) {
-				e.printStackTrace();
 				answer = e.getMessage();
 			}
 			break;
@@ -51,7 +50,6 @@ public class EchoTCPServerProtocol{
 				controlador.crearBolsillo(bolsillo, numCuenta);
 				answer = "El bolsillo se creo correctamente";
 			} catch (Exception e) {
-				e.printStackTrace();
 				answer = e.getMessage();
 			}
 			break;
@@ -62,7 +60,6 @@ public class EchoTCPServerProtocol{
 				controlador.eliminarBolsillo(numCuenta, numBolsillo);
 				answer = "El bolsillo se ha eliminado correctamente";
 			} catch (Exception e) {
-				e.printStackTrace();
 				answer = e.getMessage();
 			}
 			break;
@@ -72,7 +69,6 @@ public class EchoTCPServerProtocol{
 				controlador.eliminarCuenta(numCuenta);
 				answer = "La cuenta se ha eliminado correctamente";
 			} catch (Exception e) {
-				e.printStackTrace();
 				answer = e.getMessage();
 			}
 			break;
@@ -83,7 +79,6 @@ public class EchoTCPServerProtocol{
 				controlador.depositarDinero(numCuenta, valor);
 				answer = "El dinero se a depositado correctamente";
 			} catch (Exception e) {
-				e.printStackTrace();
 				answer = e.getMessage();
 			}
 			break;
@@ -94,7 +89,6 @@ public class EchoTCPServerProtocol{
 				controlador.retirarDineroCuenta(numCuenta, valor);
 				answer = "El dinero se a retirado correctamente";
 			} catch (Exception e) {
-				e.printStackTrace();
 				answer = e.getMessage();
 			}
 			break;
@@ -105,7 +99,6 @@ public class EchoTCPServerProtocol{
 				controlador.trasladarDineroBolsillo(numCuenta, valor);
 				answer = "El dinero se a trasladado al bolsillo correctamente";
 			} catch (Exception e) {
-				e.printStackTrace();
 				answer = e.getMessage();
 			}
 			break;
@@ -115,7 +108,6 @@ public class EchoTCPServerProtocol{
 				saldo = controlador.consultarSaldo(numCuenta);
 				answer = "El saldo de la cuenta " + numCuenta + " es de " + saldo;
 			} catch (Exception e) {
-				e.printStackTrace();
 				answer = e.getMessage();
 			}
 			break;

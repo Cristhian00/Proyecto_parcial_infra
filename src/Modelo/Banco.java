@@ -1,6 +1,7 @@
 package Modelo;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 
 public class Banco {
@@ -15,6 +16,7 @@ public class Banco {
 		this.listaCuentaAhorros = new ArrayList<CuentaAhorro>();
 		this.listaBolsillo = new ArrayList<Bolsillo>();
 		this.numeroCuenta = 0;
+		this.transacciones = new HashMap<String, Transaccion>();
 	}
 
 	public ArrayList<CuentaAhorro> getListaCuentaAhorros() {
@@ -41,9 +43,21 @@ public class Banco {
 		this.numeroCuenta = numeroCuenta;
 	}
 
+	public HashMap<String, Transaccion> getTransacciones() {
+		return transacciones;
+	}
+
+	public void setTransacciones(HashMap<String, Transaccion> transacciones) {
+		this.transacciones = transacciones;
+	}
+
 	public void crearCuenta(CuentaAhorro cuenta) {
+		
 		listaCuentaAhorros.add(cuenta);
-		numeroCuenta += 1;
+		setNumeroCuenta(getNumeroCuenta() + 1);
+		
+		registraTransaccion(cuenta.getNumCuenta(), "ABRIR_CUENTA");
+		
 		imprimirDatos();
 	}
 
@@ -55,6 +69,9 @@ public class Banco {
 				break;
 			}
 		}
+		
+		registraTransaccion(numCuenta, "CANCELAR_CUENTA");
+		
 		imprimirDatos();
 	}
 
@@ -68,6 +85,8 @@ public class Banco {
 				break;
 			}
 		}
+		
+		registraTransaccion(numCuenta, "DEPOSITAR");
 	}
 
 	public double consultarSaldoCuenta(String numCuenta) {
@@ -79,6 +98,7 @@ public class Banco {
 				saldo = listaCuentaAhorros.get(i).getSaldo();
 			}
 		}
+		registraTransaccion(numCuenta, "CONSULTAR_SALDO_CUENTA");
 		return saldo;
 	}
 
@@ -109,6 +129,8 @@ public class Banco {
 				listaBolsillo.get(i).setSaldo(nuevoSaldo);
 			}
 		}
+		
+		registraTransaccion(numCuenta, "TRASLADAR");
 	}
 
 	public void retirarDineroCuenta(String numCuenta, double saldo) {
@@ -121,21 +143,24 @@ public class Banco {
 				break;
 			}
 		}
+		registraTransaccion(numCuenta, "RETIRAR");
 	}
 
-	public void crearBolsillo(Bolsillo nuevoBolsillo, String numcuenta) {
+	public void crearBolsillo(Bolsillo nuevoBolsillo, String numCuenta) {
 		listaBolsillo.add(nuevoBolsillo);
 
 		for (int i = 0; i < listaCuentaAhorros.size(); i++) {
-			if (listaCuentaAhorros.get(i).getNumCuenta().equals(numcuenta)) {
+			if (listaCuentaAhorros.get(i).getNumCuenta().equals(numCuenta)) {
 
 				listaCuentaAhorros.get(i).setBolsillos(nuevoBolsillo);
 			}
 		}
+		registraTransaccion(numCuenta, "ABRIR_BOLSILLO");
 		imprimirDatos();
 	}
 
 	public void eliminarBosillo(String numCuenta, String numBolsillo) {
+		
 		double saldo = 0.0;
 		double nuevoSaldo = 0.0;
 
@@ -154,18 +179,22 @@ public class Banco {
 				listaCuentaAhorros.get(i).setBolsillos(null);
 			}
 		}
+		
+		registraTransaccion(numCuenta, "CANCELAR_BOLSILLO");
 		imprimirDatos();
 	}
 
-	public double consultarSaldoBolsillo(String numCuenta) {
+	public double consultarSaldoBolsillo(String numBolsillo) {
 		double salida = 0.0;
 		for (int i = 0; i < listaBolsillo.size(); i++) {
 
-			if (listaBolsillo.get(i).getNumCuenta().equals(numCuenta)) {
+			if (listaBolsillo.get(i).getNumCuenta().equals(numBolsillo)) {
 				salida = listaBolsillo.get(i).getSaldo();
 			}
 		}
-
+		
+		String numCuenta = numBolsillo.substring(0, numBolsillo.length() - 1);
+		registraTransaccion(numCuenta, "CONSULTAR_SALDO_BOLSILLO");
 		return salida;
 	}
 
@@ -189,6 +218,13 @@ public class Banco {
 			}
 		}
 		return centinela;
+	}
+	
+	public void registraTransaccion(String numCuenta, String nombre) {
+		
+		Date fecha = new Date();
+		Transaccion t = new Transaccion(nombre, fecha);
+		getTransacciones().put(numCuenta, t);
 	}
 
 	public void imprimirDatos() {

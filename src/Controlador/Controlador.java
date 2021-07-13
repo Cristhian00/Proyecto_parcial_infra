@@ -1,8 +1,11 @@
 package Controlador;
 
+import java.util.HashMap;
+
 import Modelo.Banco;
 import Modelo.Bolsillo;
 import Modelo.CuentaAhorro;
+import Modelo.Transaccion;
 
 public class Controlador {
 
@@ -15,10 +18,13 @@ public class Controlador {
 	public int numeroCuentaNueva() {
 		return miBanco.getNumeroCuenta();
 	}
-	
-	
+
+	public HashMap<String, Transaccion> obtenerTransacciones() {
+		return miBanco.getTransacciones();
+	}
 
 	public void crearCuenta(CuentaAhorro cuenta) throws Exception {
+
 		if (miBanco.existeCuentaAhorros(cuenta.getNumCuenta())) {
 			throw new Exception("Lo sentimos la cuenta ya existe");
 		} else if (miBanco.existeCliente(cuenta.getCliente())) {
@@ -29,6 +35,7 @@ public class Controlador {
 	}
 
 	public void eliminarCuenta(String numCuenta) throws Exception {
+
 		if (miBanco.existeCuentaAhorros(numCuenta)) {
 			if (miBanco.consultarSaldoCuenta(numCuenta) == 0.0) {
 				miBanco.eliminarCuenta(numCuenta);
@@ -37,7 +44,7 @@ public class Controlador {
 						+ miBanco.consultarSaldoCuenta(numCuenta));
 			}
 		} else {
-			throw new Exception("Lo sentimos la cuenta no existe ");
+			throw new Exception("Lo sentimos, la cuenta con número " + numCuenta + " no existe ");
 		}
 	}
 
@@ -46,7 +53,7 @@ public class Controlador {
 		if (miBanco.existeCuentaAhorros(numCuenta)) {
 			miBanco.depositarDinero(numCuenta, saldo);
 		} else {
-			throw new Exception("Lo sentimos, la cuenta no existe");
+			throw new Exception("Lo sentimos, la cuenta con número " + numCuenta + " no existe ");
 		}
 	}
 
@@ -57,11 +64,11 @@ public class Controlador {
 
 				miBanco.retirarDineroCuenta(numCuenta, saldo);
 			} else {
-				throw new Exception("Lo sentimos saldo insuficiente ");
+				throw new Exception("Lo sentimos, su saldo es de " + miBanco.consultarSaldoCuenta(numCuenta)
+						+ " y es insuficiente");
 			}
-
 		} else {
-			throw new Exception("Lo sentimos la cuenta no existe ");
+			throw new Exception("Lo sentimos, la cuenta con número " + numCuenta + " no existe ");
 		}
 	}
 
@@ -70,22 +77,24 @@ public class Controlador {
 		if (miBanco.existeCuentaAhorros(numCuenta) && miBanco.existeBolsillo(numCuenta + "b")) {
 			miBanco.trasladarDineroBolsillo(numCuenta, saldo);
 		} else {
-			throw new Exception("Lo sentimos, el bolsillo no existe");
+			throw new Exception("Lo sentimos, el bolsillo con número " + numCuenta + "b no existe");
 		}
 	}
 
 	public double consultarSaldoCuenta(String numCuenta) throws Exception {
+
 		double salida = 0.0;
 		if (miBanco.existeCuentaAhorros(numCuenta)) {
 			salida = miBanco.consultarSaldoCuenta(numCuenta);
 		} else {
-			throw new Exception("Lo sentimos la cuenta no existe ");
+			throw new Exception("Lo sentimos, la cuenta con número " + numCuenta + " no existe ");
 		}
 
 		return salida;
 	}
 
 	public boolean existeCuentaAhorros(String numCuenta) {
+
 		boolean ban = false;
 		if (miBanco.existeCuentaAhorros(numCuenta)) {
 			ban = true;
@@ -94,12 +103,17 @@ public class Controlador {
 	}
 
 	public void crearBolsillo(Bolsillo nuevoBolsillo, String numCuenta) throws Exception {
-		if (miBanco.existeBolsillo(nuevoBolsillo.getNumCuenta())) {
-			throw new Exception("Lo sentimos, el bolsillo ya existe");
-		} else {
 
-			miBanco.crearBolsillo(nuevoBolsillo, numCuenta);
+		if (miBanco.existeCuentaAhorros(numCuenta)) {
+			if (miBanco.existeBolsillo(nuevoBolsillo.getNumCuenta())) {
+				throw new Exception("Lo sentimos, el bolsillo con número " + nuevoBolsillo.getNumCuenta() + " ya existe");
+			} else {
+				miBanco.crearBolsillo(nuevoBolsillo, numCuenta);
+			}
+		} else {
+			throw new Exception("Lo sentimos, la cuenta con número " + numCuenta + " no existe ");
 		}
+
 	}
 
 	public void eliminarBolsillo(String numCuenta, String numBolsillo) throws Exception {
@@ -111,26 +125,29 @@ public class Controlador {
 		}
 	}
 
-	public double consultarSaldoBolsillo(String numCuenta) throws Exception {
+	public double consultarSaldoBolsillo(String numBolsillo) throws Exception {
+
 		double salida = 0.0;
-		if (miBanco.existeBolsillo(numCuenta)) {
-			salida = miBanco.consultarSaldoBolsillo(numCuenta);
+		if (miBanco.existeBolsillo(numBolsillo)) {
+			salida = miBanco.consultarSaldoBolsillo(numBolsillo);
 		} else {
 
-			throw new Exception("Lo sentimos, el bolsillo no existe");
+			throw new Exception("Lo sentimos, el bolsillo con número " + numBolsillo + " no existe");
 		}
 		return salida;
 	}
 
-	public boolean existeBolsillo(String numCuenta) {
+	public boolean existeBolsillo(String numBolsillo) {
+
 		boolean centinela = false;
-		if (miBanco.existeBolsillo(numCuenta)) {
+		if (miBanco.existeBolsillo(numBolsillo)) {
 			centinela = true;
 		}
 		return centinela;
 	}
 
 	public boolean existeCliente(String nombre) {
+
 		boolean centinela = false;
 		if (miBanco.existeCliente(nombre)) {
 			centinela = true;
@@ -145,12 +162,12 @@ public class Controlador {
 			if (miBanco.existeBolsillo(numCuenta)) {
 				saldo = miBanco.consultarSaldoBolsillo(numCuenta);
 			} else {
-				throw new Exception("El bolsillo con número de cuenta " + numCuenta + " no existe");
+				throw new Exception("Lo sentimos, el bolsillo con número de cuenta " + numCuenta + " no existe");
 			}
 		} else if (miBanco.existeCuentaAhorros(numCuenta)) {
 			saldo = miBanco.consultarSaldoCuenta(numCuenta);
 		} else {
-			throw new Exception("La cuenta de ahorros con número " + numCuenta + " no existe");
+			throw new Exception("Lo sentimos, la cuenta de ahorros con número " + numCuenta + " no existe");
 		}
 
 		return saldo;
