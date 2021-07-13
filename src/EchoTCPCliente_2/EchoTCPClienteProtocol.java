@@ -9,6 +9,8 @@ import java.util.Scanner;
 
 import javax.swing.JOptionPane;
 
+// DIEGO Y CRISTHIAN SE AMAN MUCHO 
+//Malditos tengo celos 
 public class EchoTCPClienteProtocol {
 
 	private static final Scanner SCANNER = new Scanner(System.in);

@@ -16,7 +16,7 @@ public class Controlador {
 		return miBanco.getNumeroCuenta();
 	}
 	
-	//Hola mundo
+	
 
 	public void crearCuenta(CuentaAhorro cuenta) throws Exception {
 		if (miBanco.existeCuentaAhorros(cuenta.getNumCuenta())) {
