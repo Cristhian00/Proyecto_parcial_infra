@@ -13,13 +13,13 @@ public class EchoTCPClienteProtocol {
 
 	private static final Scanner SCANNER = new Scanner(System.in);
 
-	private static PrintWriter toNerwork;
+	private static PrintWriter toNetwork;
 	private static BufferedReader fromNetwork;
 
 	public static void protocol(Socket socket) throws Exception {
 		createStreams(socket);
 
-		String menu = "    " + "MI BANCO" + "\n" + "Ingrese la opción que desea ejecutar" + "\n" + "1.Abrir cuenta"
+		String menu = "    " + "MI BANCO" + "\n" + "Ingrese la opción que desea realizar" + "\n" + "1.Abrir cuenta"
 				+ "\n" + "2.Crear bolsillo" + "\n" + "3.Cancelar bolsillo" + "\n" + "4.Cancelar cuenta" + "\n"
 				+ "5.Depositar dinero en una cuenta" + "\n" + "6.Retirar dinero" + "\n"
 				+ "7.Trasladar dinero a un bolsillo" + "\n" + "8.Consultar saldo" + "\n" + "9.Cargar datos automaticos";
@@ -78,7 +78,7 @@ public class EchoTCPClienteProtocol {
 				break;
 			}
 
-			toNerwork.println(operacion);
+			toNetwork.println(operacion);
 
 			String fromServer = fromNetwork.readLine();
 			JOptionPane.showMessageDialog(null, fromServer);
@@ -91,7 +91,7 @@ public class EchoTCPClienteProtocol {
 	}
 
 	private static void createStreams(Socket socket) throws Exception {
-		toNerwork = new PrintWriter(socket.getOutputStream(), true);
+		toNetwork = new PrintWriter(socket.getOutputStream(), true);
 		fromNetwork = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 	}
 
