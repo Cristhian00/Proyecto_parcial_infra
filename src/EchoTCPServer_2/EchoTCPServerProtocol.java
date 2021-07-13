@@ -10,13 +10,14 @@ import Controlador.Controlador;
 import Modelo.Bolsillo;
 import Modelo.CuentaAhorro;
 
-public class EchoTCPServerProtocol {
+public class EchoTCPServerProtocol{
 
 	private static PrintWriter toNetwork;
 	private static BufferedReader fromNetwork;
-	static Controlador controlador = new Controlador();
+	private static Controlador controlador = new Controlador();
 
 	public static void protocol(Socket socket) throws IOException {
+		
 		createStreams(socket);
 		String message = fromNetwork.readLine();
 		System.out.println("[SERVER] from client: " + message);
@@ -40,7 +41,7 @@ public class EchoTCPServerProtocol {
 				answer = "La cuenta se creo correctamente";
 			} catch (Exception e) {
 				e.printStackTrace();
-				answer = e.toString();
+				answer = e.getMessage();
 			}
 			break;
 		case "ABRIR_BOLSILLO":
@@ -51,7 +52,7 @@ public class EchoTCPServerProtocol {
 				answer = "El bolsillo se creo correctamente";
 			} catch (Exception e) {
 				e.printStackTrace();
-				answer = e.toString();
+				answer = e.getMessage();
 			}
 			break;
 		case "CANCELAR_BOLSILLO":
@@ -62,7 +63,7 @@ public class EchoTCPServerProtocol {
 				answer = "El bolsillo se ha eliminado correctamente";
 			} catch (Exception e) {
 				e.printStackTrace();
-				answer = e.toString();
+				answer = e.getMessage();
 			}
 			break;
 		case "CANCELAR_CUENTA":
@@ -72,7 +73,7 @@ public class EchoTCPServerProtocol {
 				answer = "La cuenta se ha eliminado correctamente";
 			} catch (Exception e) {
 				e.printStackTrace();
-				answer = e.toString();
+				answer = e.getMessage();
 			}
 			break;
 		case "DEPOSITAR":
@@ -83,7 +84,7 @@ public class EchoTCPServerProtocol {
 				answer = "El dinero se a depositado correctamente";
 			} catch (Exception e) {
 				e.printStackTrace();
-				answer = e.toString();
+				answer = e.getMessage();
 			}
 			break;
 		case "RETIRAR":
@@ -94,7 +95,7 @@ public class EchoTCPServerProtocol {
 				answer = "El dinero se a retirado correctamente";
 			} catch (Exception e) {
 				e.printStackTrace();
-				answer = e.toString();
+				answer = e.getMessage();
 			}
 			break;
 		case "TRASLADAR":
@@ -105,7 +106,7 @@ public class EchoTCPServerProtocol {
 				answer = "El dinero se a trasladado al bolsillo correctamente";
 			} catch (Exception e) {
 				e.printStackTrace();
-				answer = e.toString();
+				answer = e.getMessage();
 			}
 			break;
 		case "CONSULTAR":
@@ -115,7 +116,7 @@ public class EchoTCPServerProtocol {
 				answer = "El saldo de la cuenta " + numCuenta + " es de " + saldo;
 			} catch (Exception e) {
 				e.printStackTrace();
-				answer = e.toString();
+				answer = e.getMessage();
 			}
 			break;
 		case "CARGA":
