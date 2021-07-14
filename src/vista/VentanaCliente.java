@@ -41,15 +41,14 @@ public class VentanaCliente extends JFrame {
 	private static JRadioButton rB8;
 	private static JRadioButton rB9;
 
-	//Variables de TCPCliente
+	// Variables de TCPCliente
 	public static final int PORT = 1025;
 	public static final String SERVER = "localhost";
 	private static Socket clienteSideSocket;
-	
-	//Variables de TCPClienteProtocol
+
+	// Variables de TCPClienteProtocol
 	private static PrintWriter toNetwork;
 	private static BufferedReader fromNetwork;
-	
 
 	/**
 	 * Launch the application.
@@ -193,7 +192,7 @@ public class VentanaCliente extends JFrame {
 
 				try {
 					init();
-				} catch(Exception ex) {
+				} catch (Exception ex) {
 					System.out.println("Error al recibir los datos del servidor");
 				}
 			}
@@ -201,29 +200,30 @@ public class VentanaCliente extends JFrame {
 		bAceptar.setFont(new Font("Tahoma", Font.BOLD, 17));
 		bAceptar.setBounds(125, 417, 110, 25);
 		contentPane.add(bAceptar);
-		
+
 	}
-	
+
 	private static void createStreams() throws IOException {
 		toNetwork = new PrintWriter(clienteSideSocket.getOutputStream(), true);
 		fromNetwork = new BufferedReader(new InputStreamReader(clienteSideSocket.getInputStream()));
 	}
-	
+
 	private static void init() {
 		try {
-		clienteSideSocket = new Socket(SERVER, PORT);
-		validarRadioButtons();
-		clienteSideSocket.close();
-		} catch(Exception excep) {
-			
+			clienteSideSocket = new Socket(SERVER, PORT);
+			validarRadioButtons();
+			clienteSideSocket.close();
+
+		} catch (Exception excep) {
+			System.out.println(excep.getMessage());
 		}
 	}
 
-	public static void validarRadioButtons() throws Exception{
+	public static boolean validarRadioButtons() throws Exception {
 
 		frame.setVisible(false);
-		createStreams();		
-		
+		createStreams();
+
 		String operacion = "";
 		String numCuenta = "";
 		String aux = "";
@@ -281,19 +281,23 @@ public class VentanaCliente extends JFrame {
 			operacion = "CONSULTAR," + numCuenta;
 		} else if (rB9.isSelected()) {
 			aux = JOptionPane.showInputDialog("Escriba el nombre del archivo a cargar");
-			operacion = "CARGA,"+ aux;
+			operacion = "CARGA," + aux;
 		} else {
-			JOptionPane.showMessageDialog(null, "Debe seleccionar una opción");
+			JOptionPane.showMessageDialog(null, "Debe seleccionar una opción", "Error", JOptionPane.ERROR_MESSAGE);
 		}
-		
-		if(!operacion.isEmpty()) {
-			
+		ban = true;
+		if (!operacion.isEmpty()) {
+			System.out.println("Entre si no esta vacio");
 			toNetwork.println(operacion);
-			
+
 			String fromServer = fromNetwork.readLine();
 			JOptionPane.showMessageDialog(null, fromServer);
 			System.out.println("[Client] from server:" + fromServer);
+			frame.setVisible(true);
+		} else {
+			ban = false;
+			frame.setVisible(true);
 		}
-
+		return ban;
 	}
 }

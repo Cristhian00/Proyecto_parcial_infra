@@ -15,9 +15,11 @@ public class EchoTCPCliente {
 
 	public void init() throws Exception {
 
-		clienteSideSocket = new Socket(SERVER, PORT);
-		EchoTCPClienteProtocol.protocol(clienteSideSocket);
-		clienteSideSocket.close();
+		while (true) {
+			clienteSideSocket = new Socket(SERVER, PORT);
+			EchoTCPClienteProtocol.protocol(clienteSideSocket);
+			clienteSideSocket.close();
+		}
 	}
 
 	public static void main(String[] args) throws Exception {

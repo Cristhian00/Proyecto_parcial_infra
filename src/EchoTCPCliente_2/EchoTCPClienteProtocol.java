@@ -17,6 +17,7 @@ public class EchoTCPClienteProtocol {
 	private static BufferedReader fromNetwork;
 
 	public static void protocol(Socket socket) throws Exception {
+		
 		createStreams(socket);
 
 		String menu = "    " + "MI BANCO" + "\n" + "Ingrese la opción que desea realizar" + "\n" + "1.Abrir cuenta"
@@ -71,20 +72,19 @@ public class EchoTCPClienteProtocol {
 				break;
 			case 9:
 				fromUser = JOptionPane.showInputDialog("Escriba nombre archivo");
-				operacion = "CARGA,";
+				operacion = "CARGA," + fromUser;
 				break;
 			default:
 				JOptionPane.showMessageDialog(null, "La opción que selecciono no existe");
 				break;
 			}
 
-			toNetwork.println(operacion);
+			confir = JOptionPane.showConfirmDialog(null, "¿Desea realizar otra operación?");
+			
+			toNetwork.println(confir + "," + operacion);
 
 			String fromServer = fromNetwork.readLine();
-			JOptionPane.showMessageDialog(null, fromServer);
 			System.out.println("[Client] from server:" + fromServer);
-
-			confir = JOptionPane.showConfirmDialog(null, "¿Desea realizar otra operación?");
 
 		} while (confir == 0);
 
