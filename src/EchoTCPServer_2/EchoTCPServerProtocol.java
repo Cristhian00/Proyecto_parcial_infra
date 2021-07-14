@@ -117,16 +117,14 @@ public class EchoTCPServerProtocol {
 
 			try {
 				ArrayList<String> arreglo = controlador.leerArchivo(nombre);
-
 				for (int i = 0; i < arreglo.size(); i++) {
 					System.out.println(arreglo.get(i));
 				}
-
 			} catch (Exception e) {
-
 				answer = e.getMessage();
 			}
 		default:
+			answer = "No se pudo recibir la operación a realizar";
 			break;
 		}
 
