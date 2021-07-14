@@ -56,7 +56,7 @@ public class Principal {
 				break;
 			case 9:
 				operacion = "CARGA,";
-				operacion += JOptionPane.showInputDialog("Escriba nombre archivo");
+				operacion += JOptionPane.showInputDialog("Escriba la ruta del archivo");
 				break;
 			default:
 				JOptionPane.showMessageDialog(null, "La opción que selecciono no existe");

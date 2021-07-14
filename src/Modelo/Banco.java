@@ -4,12 +4,15 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 
+import Persistencia.LeerArchivo;
+
 public class Banco {
 
 	private ArrayList<CuentaAhorro> listaCuentaAhorros;
 	private ArrayList<Bolsillo> listaBolsillo;
 	private int numeroCuenta;
 	private HashMap<String, Transaccion> transacciones;
+	private LeerArchivo miArchivo;
 
 	public Banco() {
 		super();
@@ -17,6 +20,7 @@ public class Banco {
 		this.listaBolsillo = new ArrayList<Bolsillo>();
 		this.numeroCuenta = 0;
 		this.transacciones = new HashMap<String, Transaccion>();
+		this.miArchivo = new LeerArchivo();
 	}
 
 	public ArrayList<CuentaAhorro> getListaCuentaAhorros() {
@@ -52,12 +56,12 @@ public class Banco {
 	}
 
 	public void crearCuenta(CuentaAhorro cuenta) {
-		
+
 		listaCuentaAhorros.add(cuenta);
 		setNumeroCuenta(getNumeroCuenta() + 1);
-		
+
 		registraTransaccion(cuenta.getNumCuenta(), "ABRIR_CUENTA");
-		
+
 		imprimirDatos();
 	}
 
@@ -69,9 +73,9 @@ public class Banco {
 				break;
 			}
 		}
-		
+
 		registraTransaccion(numCuenta, "CANCELAR_CUENTA");
-		
+
 		imprimirDatos();
 	}
 
@@ -85,7 +89,7 @@ public class Banco {
 				break;
 			}
 		}
-		
+
 		registraTransaccion(numCuenta, "DEPOSITAR");
 	}
 
@@ -129,7 +133,7 @@ public class Banco {
 				listaBolsillo.get(i).setSaldo(nuevoSaldo);
 			}
 		}
-		
+
 		registraTransaccion(numCuenta, "TRASLADAR");
 	}
 
@@ -160,7 +164,7 @@ public class Banco {
 	}
 
 	public void eliminarBosillo(String numCuenta, String numBolsillo) {
-		
+
 		double saldo = 0.0;
 		double nuevoSaldo = 0.0;
 
@@ -179,7 +183,7 @@ public class Banco {
 				listaCuentaAhorros.get(i).setBolsillos(null);
 			}
 		}
-		
+
 		registraTransaccion(numCuenta, "CANCELAR_BOLSILLO");
 		imprimirDatos();
 	}
@@ -192,7 +196,7 @@ public class Banco {
 				salida = listaBolsillo.get(i).getSaldo();
 			}
 		}
-		
+
 		String numCuenta = numBolsillo.substring(0, numBolsillo.length() - 1);
 		registraTransaccion(numCuenta, "CONSULTAR_SALDO_BOLSILLO");
 		return salida;
@@ -219,9 +223,9 @@ public class Banco {
 		}
 		return centinela;
 	}
-	
+
 	public void registraTransaccion(String numCuenta, String nombre) {
-		
+
 		Date fecha = new Date();
 		Transaccion t = new Transaccion(nombre, fecha);
 		getTransacciones().put(numCuenta, t);
@@ -238,6 +242,11 @@ public class Banco {
 		for (Bolsillo b : listaBolsillo) {
 			System.out.println(b.getNumCuenta() + " - " + b.getSaldo());
 		}
+	}
+
+	public ArrayList<String> leerArchivo(String nombre) {
+
+		return miArchivo.leerArchivo(nombre);
 	}
 
 }

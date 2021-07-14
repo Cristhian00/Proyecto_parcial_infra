@@ -5,19 +5,20 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.ArrayList;
 
 import Controlador.Controlador;
 import Modelo.Bolsillo;
 import Modelo.CuentaAhorro;
 
-public class EchoTCPServerProtocol{
+public class EchoTCPServerProtocol {
 
 	private static PrintWriter toNetwork;
 	private static BufferedReader fromNetwork;
 	private static Controlador controlador = new Controlador();
 
 	public static void protocol(Socket socket) throws IOException {
-		
+
 		createStreams(socket);
 		String message = fromNetwork.readLine();
 		System.out.println("[SERVER] from client: " + message);
@@ -112,6 +113,19 @@ public class EchoTCPServerProtocol{
 			}
 			break;
 		case "CARGA":
+			String nombre = transaccion[1];
+
+			try {
+				ArrayList<String> arreglo = controlador.leerArchivo(nombre);
+
+				for (int i = 0; i < arreglo.size(); i++) {
+					System.out.println(arreglo.get(i));
+				}
+
+			} catch (Exception e) {
+
+				answer = e.getMessage();
+			}
 		default:
 			break;
 		}

@@ -280,8 +280,8 @@ public class VentanaCliente extends JFrame {
 			numCuenta = JOptionPane.showInputDialog("Ingrese el número de la cuenta a consular saldo");
 			operacion = "CONSULTAR," + numCuenta;
 		} else if (rB9.isSelected()) {
-			JOptionPane.showMessageDialog(null, "Escriba el nombre del archivo a cargar");
-			operacion = "CARGA,";
+			aux = JOptionPane.showInputDialog("Escriba el nombre del archivo a cargar");
+			operacion = "CARGA,"+ aux;
 		} else {
 			JOptionPane.showMessageDialog(null, "Debe seleccionar una opción");
 		}

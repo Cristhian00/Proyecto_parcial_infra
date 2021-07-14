@@ -1,5 +1,7 @@
 package Controlador;
 
+import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import Modelo.Banco;
@@ -106,7 +108,8 @@ public class Controlador {
 
 		if (miBanco.existeCuentaAhorros(numCuenta)) {
 			if (miBanco.existeBolsillo(nuevoBolsillo.getNumCuenta())) {
-				throw new Exception("Lo sentimos, el bolsillo con número " + nuevoBolsillo.getNumCuenta() + " ya existe");
+				throw new Exception(
+						"Lo sentimos, el bolsillo con número " + nuevoBolsillo.getNumCuenta() + " ya existe");
 			} else {
 				miBanco.crearBolsillo(nuevoBolsillo, numCuenta);
 			}
@@ -171,6 +174,12 @@ public class Controlador {
 		}
 
 		return saldo;
+	}
+
+	public ArrayList<String> leerArchivo(String nombre) throws Exception {
+
+		return miBanco.leerArchivo(nombre);
+
 	}
 
 }
