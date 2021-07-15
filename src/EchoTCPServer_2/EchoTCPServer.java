@@ -13,7 +13,7 @@ public class EchoTCPServer {
 	public EchoTCPServer() {
 
 		System.out.println("Echo TCP SERVER is running on port: " + PORT);
-		// hilo = new Thread(this);
+		
 	}
 
 	private void init() throws Exception {
@@ -22,9 +22,6 @@ public class EchoTCPServer {
 		while (true) {
 
 			serverSideSocket = listener.accept();
-			// System.out.println("Direccion IP del
-			// cliente:"+serverSideSocket.getInetAddress());
-			// System.out.println("Puerto del cliente:"+serverSideSocket.getPort());
 			EchoTCPServerProtocol.protocol(serverSideSocket);
 
 		}

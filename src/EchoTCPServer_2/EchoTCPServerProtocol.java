@@ -20,20 +20,25 @@ public class EchoTCPServerProtocol {
 	public static void protocol(Socket socket) throws IOException {
 
 		createStreams(socket);
-		String message = fromNetwork.readLine();
-		System.out.println("[SERVER] from client: " + message);
-		String answer = "";
-
-		String[] transaccion = message.split(",");
-		String operacion = transaccion[1];
-		int confir = Integer.parseInt(transaccion[0]);
 
 		String numCuenta = "";
 		String numBolsillo = "";
 		double valor = 0.0;
 		double saldo = 0.0;
-		
+		int confir = 0;
+		String message = "";
+		String answer = "";
+		String[] transaccion = new String[10];
+		String operacion = "";
+
 		do {
+			message = fromNetwork.readLine();
+			System.out.println("[SERVER] from client: " + message);
+
+			transaccion = message.split(",");
+			operacion = transaccion[1];
+			confir = Integer.parseInt(transaccion[0]);
+
 			switch (operacion) {
 			case "ABRIR_CUENTA":
 				String usuario = transaccion[2];
@@ -129,16 +134,18 @@ public class EchoTCPServerProtocol {
 				answer = "No se pudo recibir la operación a realizar";
 				break;
 			}
+			System.out.println(answer);
 			toNetwork.println(answer);
-		} while (confir == 1);
+		} while (confir == 0);
 	}
-	
-	/*public static void cargarDatos(ArrayList<String[]> operaciones) {
-		
-		for(int i = 0; i < operaciones.size(); i++) {
-			
-		}
-	}*/
+
+	/*
+	 * public static void cargarDatos(ArrayList<String[]> operaciones) {
+	 * 
+	 * for(int i = 0; i < operaciones.size(); i++) {
+	 * 
+	 * } }
+	 */
 
 	private static void createStreams(Socket socket) throws IOException {
 		toNetwork = new PrintWriter(socket.getOutputStream(), true);

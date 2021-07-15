@@ -31,6 +31,7 @@ public class EchoTCPClienteProtocol {
 		String fromUser = "";
 
 		do {
+			
 			res = Integer.parseInt(JOptionPane.showInputDialog(menu));
 
 			switch (res) {
@@ -80,8 +81,10 @@ public class EchoTCPClienteProtocol {
 			}
 
 			confir = JOptionPane.showConfirmDialog(null, "¿Desea realizar otra operación?");
-			
+			System.out.println(confir + "," + operacion);
 			toNetwork.println(confir + "," + operacion);
+			
+		
 
 			String fromServer = fromNetwork.readLine();
 			System.out.println("[Client] from server:" + fromServer);
