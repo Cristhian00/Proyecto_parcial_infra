@@ -36,114 +36,120 @@ public class EchoTCPClienteProtocol {
 
 			res = Integer.parseInt(JOptionPane.showInputDialog(menu));
 
-			switch (res) {
+			if (res == 0d) {
+				JOptionPane.showMessageDialog(null, "La opción que selecciono no existe");
+			} else {
+				switch (res) {
 
-			case 1:
-				fromUser = JOptionPane.showInputDialog("Escriba su nombre completo:");
-				operacion = "ABRIR_CUENTA," + fromUser;
-				break;
-			case 2:
-				fromUser = JOptionPane.showInputDialog("Escriba su número de cuenta de ahorro:");
-				operacion = "ABRIR_BOLSILLO," + fromUser;
-				break;
-			case 3:
-				fromUser = JOptionPane.showInputDialog("Escriba el número de cuenta del bolsillo que desea cancelar");
-				operacion = "CANCELAR_BOLSILLO," + fromUser;
-				break;
-			case 4:
-				fromUser = JOptionPane.showInputDialog("Escriba el número de cuenta de ahorros a cancelar:");
-				operacion = "CANCELAR_CUENTA," + fromUser;
-				break;
-			case 5:
-				fromUser = JOptionPane.showInputDialog("Escriba su número de cuenta de ahorro:") + ",";
-				fromUser += JOptionPane.showInputDialog("Escriba el valor que desea depositar:");
-				operacion = "DEPOSITAR," + fromUser;
-				break;
-			case 6:
-				fromUser = JOptionPane.showInputDialog("Escriba su número de cuenta de ahorro:") + ",";
-				fromUser += JOptionPane.showInputDialog("Escriba el valor que desea retirar:");
-				operacion = "RETIRAR," + fromUser;
-				break;
-			case 7:
-				fromUser = JOptionPane.showInputDialog("Escriba su número de cuenta de ahorro:") + ",";
-				fromUser += JOptionPane.showInputDialog("Escriba el valor que desea trasladar:");
-				operacion = "TRASLADAR," + fromUser;
-				break;
-			case 8:
-				fromUser = JOptionPane.showInputDialog("Escriba su número de la cuenta:");
-				operacion = "CONSULTAR," + fromUser;
-				break;
-			case 9:
+				case 1:
+					fromUser = JOptionPane.showInputDialog("Escriba su nombre completo:");
+					operacion = "ABRIR_CUENTA," + fromUser;
+					break;
+				case 2:
+					fromUser = JOptionPane.showInputDialog("Escriba su número de cuenta de ahorro:");
+					operacion = "ABRIR_BOLSILLO," + fromUser;
+					break;
+				case 3:
+					fromUser = JOptionPane
+							.showInputDialog("Escriba el número de cuenta del bolsillo que desea cancelar");
+					operacion = "CANCELAR_BOLSILLO," + fromUser;
+					break;
+				case 4:
+					fromUser = JOptionPane.showInputDialog("Escriba el número de cuenta de ahorros a cancelar:");
+					operacion = "CANCELAR_CUENTA," + fromUser;
+					break;
+				case 5:
+					fromUser = JOptionPane.showInputDialog("Escriba su número de cuenta de ahorro:") + ",";
+					fromUser += JOptionPane.showInputDialog("Escriba el valor que desea depositar:");
+					operacion = "DEPOSITAR," + fromUser;
+					break;
+				case 6:
+					fromUser = JOptionPane.showInputDialog("Escriba su número de cuenta de ahorro:") + ",";
+					fromUser += JOptionPane.showInputDialog("Escriba el valor que desea retirar:");
+					operacion = "RETIRAR," + fromUser;
+					break;
+				case 7:
+					fromUser = JOptionPane.showInputDialog("Escriba su número de cuenta de ahorro:") + ",";
+					fromUser += JOptionPane.showInputDialog("Escriba el valor que desea trasladar:");
+					operacion = "TRASLADAR," + fromUser;
+					break;
+				case 8:
+					fromUser = JOptionPane.showInputDialog("Escriba su número de la cuenta:");
+					operacion = "CONSULTAR," + fromUser;
+					break;
+				case 9:
 
-				fromUser = JOptionPane.showInputDialog("Escriba el nombre del archivo");
-				operacion = 0 + ",CARGA," + fromUser;
+					fromUser = JOptionPane.showInputDialog("Escriba el nombre del archivo");
+					operacion = 0 + ",CARGA," + fromUser;
 
-				toNetwork.println(operacion);
-
-				fromServer = fromNetwork.readLine();
-
-				String[] lista = fromServer.split("-");
-				String oper = "";
-
-				for (int i = 0; i < lista.length; i++) {
-
-					oper = lista[i].split(",")[0];
-					System.out.println("LIne = " + lista[i] + " --- Oper = " + oper);
-
-					switch (oper) {
-					case "ABRIR_CUENTA":
-						operacion = lista[i];
-						break;
-					case "ABRIR_BOLSILLO":
-						operacion = lista[i];
-						break;
-					case "CANCELAR_BOLSILLO":
-						operacion = lista[i];
-						break;
-					case "CANCELAR_CUENTA":
-						operacion = lista[i];
-						break;
-					case "DEPOSITAR":
-						operacion = lista[i];
-						break;
-					case "RETIRAR":
-						operacion = lista[i];
-						break;
-					case "TRASLADAR":
-						operacion = lista[i];
-						break;
-					case "CONSULTAR":
-						operacion = lista[i];
-						break;
-					default:
-						System.out.println("Ninguna opción se seleeciono");
-						break;
-					}
-
-					toNetwork.println(0 + "," + operacion);
+					toNetwork.println(operacion);
 
 					fromServer = fromNetwork.readLine();
-					JOptionPane.showMessageDialog(null, "[Client] from server: " + fromServer);
 
+					String[] lista = fromServer.split("-");
+					String oper = "";
+
+					for (int i = 0; i < lista.length; i++) {
+
+						oper = lista[i].split(",")[0];
+						System.out.println("LIne = " + lista[i] + " --- Oper = " + oper);
+
+						switch (oper) {
+						case "ABRIR_CUENTA":
+							operacion = lista[i];
+							break;
+						case "ABRIR_BOLSILLO":
+							operacion = lista[i];
+							break;
+						case "CANCELAR_BOLSILLO":
+							operacion = lista[i];
+							break;
+						case "CANCELAR_CUENTA":
+							operacion = lista[i];
+							break;
+						case "DEPOSITAR":
+							operacion = lista[i];
+							break;
+						case "RETIRAR":
+							operacion = lista[i];
+							break;
+						case "TRASLADAR":
+							operacion = lista[i];
+							break;
+						case "CONSULTAR":
+							operacion = lista[i];
+							break;
+						default:
+							System.out.println("Ninguna opción se selecciono");
+							break;
+						}
+
+						toNetwork.println(0 + "," + operacion);
+
+						fromServer = fromNetwork.readLine();
+						System.out.println("[Client] from server: " + fromServer);
+
+					}
+					ban = true;
+					break;
+				default:
+					JOptionPane.showMessageDialog(null, "La opción que selecciono no existe");
+					break;
 				}
-				ban = true;
-				break;
-			default:
-				JOptionPane.showMessageDialog(null, "La opción que selecciono no existe");
-				break;
+
+				if (ban == false) {
+					confir = JOptionPane.showConfirmDialog(null, "¿Desea realizar otra operación?");
+					toNetwork.println(confir + "," + operacion);
+
+					fromServer = fromNetwork.readLine();
+					JOptionPane.showMessageDialog(null, fromServer);
+					System.out.println("[Client] from server:" + fromServer);
+				} else {
+					JOptionPane.showMessageDialog(null, "Se cargaron todos los datos del archivo");
+					ban = false;
+				}
 			}
 
-			if (ban == false) {
-				confir = JOptionPane.showConfirmDialog(null, "¿Desea realizar otra operación?");
-				toNetwork.println(confir + "," + operacion);
-
-				fromServer = fromNetwork.readLine();
-				JOptionPane.showMessageDialog(null, fromServer);
-				System.out.println("[Client] from server:" + fromServer);
-			} else {
-				JOptionPane.showMessageDialog(null, "Se cargaron todos los datos del archivo");
-				ban = false;
-			}
 		} while (confir == 0);
 
 	}

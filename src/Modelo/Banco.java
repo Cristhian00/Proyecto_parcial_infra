@@ -76,7 +76,7 @@ public class Banco {
 
 		registraTransaccion(numCuenta, "CANCELAR_CUENTA");
 
-		imprimirDatos();
+		//imprimirDatos();
 	}
 
 	public void depositarDinero(String numCuenta, double saldo) {
@@ -160,7 +160,7 @@ public class Banco {
 			}
 		}
 		registraTransaccion(numCuenta, "ABRIR_BOLSILLO");
-		imprimirDatos();
+		//imprimirDatos();
 	}
 
 	public void eliminarBosillo(String numCuenta, String numBolsillo) {
@@ -185,7 +185,7 @@ public class Banco {
 		}
 
 		registraTransaccion(numCuenta, "CANCELAR_BOLSILLO");
-		imprimirDatos();
+		//imprimirDatos();
 	}
 
 	public double consultarSaldoBolsillo(String numBolsillo) {

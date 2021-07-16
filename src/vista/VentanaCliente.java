@@ -25,7 +25,7 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.awt.event.ActionEvent;
 
-public class VentanaCliente extends JFrame {
+public class VentanaCliente extends JFrame implements ActionListener {
 
 	private JPanel contentPane;
 	private static VentanaCliente frame;
@@ -40,6 +40,7 @@ public class VentanaCliente extends JFrame {
 	private static JRadioButton rB7;
 	private static JRadioButton rB8;
 	private static JRadioButton rB9;
+	private static JButton bAceptar;
 
 	// Variables de TCPCliente
 	public static final int PORT = 1025;
@@ -186,26 +187,25 @@ public class VentanaCliente extends JFrame {
 		grupoRadios.add(rB8);
 		grupoRadios.add(rB9);
 
-		JButton bAceptar = new JButton("Aceptar");
-		bAceptar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-
-				try {
-					init();
-				} catch (Exception ex) {
-					System.out.println("Error al recibir los datos del servidor");
-				}
-			}
-		});
+		bAceptar = new JButton("Aceptar");
 		bAceptar.setFont(new Font("Tahoma", Font.BOLD, 17));
 		bAceptar.setBounds(125, 417, 110, 25);
 		contentPane.add(bAceptar);
 
+		int aux = 0;
+		do {
+			bAceptar.addActionListener(this);
+		} while (aux == 0);
 	}
 
 	private static void createStreams() throws IOException {
 		toNetwork = new PrintWriter(clienteSideSocket.getOutputStream(), true);
 		fromNetwork = new BufferedReader(new InputStreamReader(clienteSideSocket.getInputStream()));
+	}
+
+	public void actionPerformed(ActionEvent e) {
+		if (e.getSource() == bAceptar)
+			init();
 	}
 
 	private static void init() {
@@ -219,16 +219,19 @@ public class VentanaCliente extends JFrame {
 		}
 	}
 
-	public static boolean validarRadioButtons() throws Exception {
+	public static int validarRadioButtons() throws Exception {
 
-		frame.setVisible(false);
 		createStreams();
 
 		String operacion = "";
 		String numCuenta = "";
 		String aux = "";
+		String fromUser = "";
+		String fromServer = "";
 		double valor = 0.0;
 		boolean ban = true;
+		boolean centinela = false;
+		int confir = 0;
 
 		if (rB1.isSelected()) {
 			aux = JOptionPane.showInputDialog("Ingrese su nombre y apellido");
@@ -280,24 +283,79 @@ public class VentanaCliente extends JFrame {
 			numCuenta = JOptionPane.showInputDialog("Ingrese el número de la cuenta a consular saldo");
 			operacion = "CONSULTAR," + numCuenta;
 		} else if (rB9.isSelected()) {
-			aux = JOptionPane.showInputDialog("Escriba el nombre del archivo a cargar");
-			operacion = "CARGA," + aux;
+
+			fromUser = JOptionPane.showInputDialog("Escriba el nombre del archivo");
+			operacion = 0 + ",CARGA," + fromUser;
+
+			toNetwork.println(operacion);
+
+			fromServer = fromNetwork.readLine();
+
+			String[] lista = fromServer.split("-");
+			String oper = "";
+
+			for (int i = 0; i < lista.length; i++) {
+
+				oper = lista[i].split(",")[0];
+				System.out.println("LIne = " + lista[i] + " --- Oper = " + oper);
+
+				switch (oper) {
+				case "ABRIR_CUENTA":
+					operacion = lista[i];
+					break;
+				case "ABRIR_BOLSILLO":
+					operacion = lista[i];
+					break;
+				case "CANCELAR_BOLSILLO":
+					operacion = lista[i];
+					break;
+				case "CANCELAR_CUENTA":
+					operacion = lista[i];
+					break;
+				case "DEPOSITAR":
+					operacion = lista[i];
+					break;
+				case "RETIRAR":
+					operacion = lista[i];
+					break;
+				case "TRASLADAR":
+					operacion = lista[i];
+					break;
+				case "CONSULTAR":
+					operacion = lista[i];
+					break;
+				default:
+					System.out.println("Ninguna opción se seleeciono");
+					break;
+				}
+
+				toNetwork.println(0 + "," + operacion);
+
+				fromServer = fromNetwork.readLine();
+				JOptionPane.showMessageDialog(null, "[Client] from server: " + fromServer);
+
+			}
+			centinela = true;
+
 		} else {
 			JOptionPane.showMessageDialog(null, "Debe seleccionar una opción", "Error", JOptionPane.ERROR_MESSAGE);
 		}
-		ban = true;
-		if (!operacion.isEmpty()) {
-			System.out.println("Entre si no esta vacio");
-			toNetwork.println(operacion);
 
-			String fromServer = fromNetwork.readLine();
+		ban = true;
+		if (centinela == false && !operacion.isEmpty()) {
+			confir = JOptionPane.showConfirmDialog(null, "¿Desea realizar otra operación?");
+			toNetwork.println(confir + "," + operacion);
+
+			fromServer = fromNetwork.readLine();
 			JOptionPane.showMessageDialog(null, fromServer);
 			System.out.println("[Client] from server:" + fromServer);
-			frame.setVisible(true);
+			grupoRadios.clearSelection();
+
 		} else {
+			JOptionPane.showMessageDialog(null, "Se cargaron todos los datos del archivo");
+			centinela = false;
 			ban = false;
-			frame.setVisible(true);
 		}
-		return ban;
+		return confir;
 	}
 }
