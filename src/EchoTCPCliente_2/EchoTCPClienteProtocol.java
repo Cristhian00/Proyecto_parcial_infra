@@ -25,7 +25,7 @@ public class EchoTCPClienteProtocol {
 				+ "5.Depositar dinero en una cuenta" + "\n" + "6.Retirar dinero" + "\n"
 				+ "7.Trasladar dinero a un bolsillo" + "\n" + "8.Consultar saldo" + "\n" + "9.Cargar datos automaticos";
 
-		int res;
+		int res = -1;
 		int confir = 0;
 		String operacion = "";
 		String fromUser = "";
@@ -34,9 +34,13 @@ public class EchoTCPClienteProtocol {
 
 		do {
 
-			res = Integer.parseInt(JOptionPane.showInputDialog(menu));
+			try {
+				res = Integer.parseInt(JOptionPane.showInputDialog(menu));
+			} catch(NumberFormatException e) {
+				JOptionPane.showMessageDialog(null, "La opción que selecciono no existe");
+			}
 
-			if (res == 0d) {
+			if (res == -1) {
 				JOptionPane.showMessageDialog(null, "La opción que selecciono no existe");
 			} else {
 				switch (res) {
