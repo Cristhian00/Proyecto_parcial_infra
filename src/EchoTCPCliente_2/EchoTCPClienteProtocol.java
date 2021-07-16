@@ -17,7 +17,7 @@ public class EchoTCPClienteProtocol {
 	private static BufferedReader fromNetwork;
 
 	public static void protocol(Socket socket) throws Exception {
-		
+
 		createStreams(socket);
 
 		String menu = "    " + "MI BANCO" + "\n" + "Ingrese la opción que desea realizar" + "\n" + "1.Abrir cuenta"
@@ -29,9 +29,11 @@ public class EchoTCPClienteProtocol {
 		int confir = 0;
 		String operacion = "";
 		String fromUser = "";
+		String fromServer = "";
+		boolean ban = false;
 
 		do {
-			
+
 			res = Integer.parseInt(JOptionPane.showInputDialog(menu));
 
 			switch (res) {
@@ -72,23 +74,76 @@ public class EchoTCPClienteProtocol {
 				operacion = "CONSULTAR," + fromUser;
 				break;
 			case 9:
-				fromUser = JOptionPane.showInputDialog("Escriba nombre archivo");
-				operacion = "CARGA," + fromUser;
+
+				fromUser = JOptionPane.showInputDialog("Escriba el nombre del archivo");
+				operacion = 0 + ",CARGA," + fromUser;
+
+				toNetwork.println(operacion);
+
+				fromServer = fromNetwork.readLine();
+
+				String[] lista = fromServer.split("-");
+				String oper = "";
+
+				for (int i = 0; i < lista.length; i++) {
+
+					oper = lista[i].split(",")[0];
+					System.out.println("LIne = " + lista[i] + " --- Oper = " + oper);
+
+					switch (oper) {
+					case "ABRIR_CUENTA":
+						operacion = lista[i];
+						break;
+					case "ABRIR_BOLSILLO":
+						operacion = lista[i];
+						break;
+					case "CANCELAR_BOLSILLO":
+						operacion = lista[i];
+						break;
+					case "CANCELAR_CUENTA":
+						operacion = lista[i];
+						break;
+					case "DEPOSITAR":
+						operacion = lista[i];
+						break;
+					case "RETIRAR":
+						operacion = lista[i];
+						break;
+					case "TRASLADAR":
+						operacion = lista[i];
+						break;
+					case "CONSULTAR":
+						operacion = lista[i];
+						break;
+					default:
+						System.out.println("Ninguna opción se seleeciono");
+						break;
+					}
+
+					toNetwork.println(0 + "," + operacion);
+
+					fromServer = fromNetwork.readLine();
+					JOptionPane.showMessageDialog(null, "[Client] from server: " + fromServer);
+
+				}
+				ban = true;
 				break;
 			default:
 				JOptionPane.showMessageDialog(null, "La opción que selecciono no existe");
 				break;
 			}
 
-			confir = JOptionPane.showConfirmDialog(null, "¿Desea realizar otra operación?");
-			System.out.println(confir + "," + operacion);
-			toNetwork.println(confir + "," + operacion);
-			
-		
+			if (ban == false) {
+				confir = JOptionPane.showConfirmDialog(null, "¿Desea realizar otra operación?");
+				toNetwork.println(confir + "," + operacion);
 
-			String fromServer = fromNetwork.readLine();
-			System.out.println("[Client] from server:" + fromServer);
-
+				fromServer = fromNetwork.readLine();
+				JOptionPane.showMessageDialog(null, fromServer);
+				System.out.println("[Client] from server:" + fromServer);
+			} else {
+				JOptionPane.showMessageDialog(null, "Se cargaron todos los datos del archivo");
+				ban = false;
+			}
 		} while (confir == 0);
 
 	}

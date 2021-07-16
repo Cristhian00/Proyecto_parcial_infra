@@ -244,7 +244,7 @@ public class Banco {
 		}
 	}
 
-	public ArrayList<String> leerArchivo(String nombre) {
+	public String leerArchivo(String nombre) {
 
 		return miArchivo.leerArchivo(nombre);
 	}

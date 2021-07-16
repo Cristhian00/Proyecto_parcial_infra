@@ -63,7 +63,6 @@ public class Controlador {
 
 		if (miBanco.existeCuentaAhorros(numCuenta)) {
 			if (miBanco.consultarSaldoCuenta(numCuenta) >= saldo) {
-
 				miBanco.retirarDineroCuenta(numCuenta, saldo);
 			} else {
 				throw new Exception("Lo sentimos, su saldo es de " + miBanco.consultarSaldoCuenta(numCuenta)
@@ -77,7 +76,12 @@ public class Controlador {
 	public void trasladarDineroBolsillo(String numCuenta, double saldo) throws Exception {
 
 		if (miBanco.existeCuentaAhorros(numCuenta) && miBanco.existeBolsillo(numCuenta + "b")) {
-			miBanco.trasladarDineroBolsillo(numCuenta, saldo);
+			if(consultarSaldoCuenta(numCuenta) >= saldo) {
+				miBanco.trasladarDineroBolsillo(numCuenta, saldo);
+			} else {
+				throw new Exception("Lo sentimos, el saldo no es suficiente");
+			}
+			
 		} else {
 			throw new Exception("Lo sentimos, el bolsillo con número " + numCuenta + "b no existe");
 		}
@@ -176,7 +180,7 @@ public class Controlador {
 		return saldo;
 	}
 
-	public ArrayList<String> leerArchivo(String nombre) throws Exception {
+	public String leerArchivo(String nombre) throws Exception {
 
 		return miBanco.leerArchivo(nombre);
 

@@ -32,6 +32,7 @@ public class EchoTCPServerProtocol {
 		String operacion = "";
 
 		do {
+			
 			message = fromNetwork.readLine();
 			System.out.println("[SERVER] from client: " + message);
 
@@ -40,6 +41,7 @@ public class EchoTCPServerProtocol {
 			confir = Integer.parseInt(transaccion[0]);
 
 			switch (operacion) {
+
 			case "ABRIR_CUENTA":
 				String usuario = transaccion[2];
 				CuentaAhorro cuenta = new CuentaAhorro(usuario);
@@ -121,15 +123,12 @@ public class EchoTCPServerProtocol {
 				break;
 			case "CARGA":
 				String nombre = transaccion[2];
-
 				try {
-					ArrayList<String> arreglo = controlador.leerArchivo(nombre);
-					for (int i = 0; i < arreglo.size(); i++) {
-						System.out.println(arreglo.get(i));
-					}
+					answer = controlador.leerArchivo(nombre);
 				} catch (Exception e) {
 					answer = e.getMessage();
 				}
+				break;
 			default:
 				answer = "No se pudo recibir la operación a realizar";
 				break;

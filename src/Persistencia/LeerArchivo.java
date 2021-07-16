@@ -7,8 +7,9 @@ import java.util.ArrayList;
 
 public class LeerArchivo {
 
-	public ArrayList<String> leerArchivo(String nombre) {
-		ArrayList<String> salida = new ArrayList<String>();
+	public String leerArchivo(String nombre) {
+
+		String salida = "";
 		File archivo = null;
 		FileReader fr = null;
 		BufferedReader br = null;
@@ -25,7 +26,7 @@ public class LeerArchivo {
 			String linea;
 
 			while ((linea = br.readLine()) != null)
-				salida.add(linea);
+				salida += linea + "-";
 
 		} catch (Exception e) {
 			e.printStackTrace();
