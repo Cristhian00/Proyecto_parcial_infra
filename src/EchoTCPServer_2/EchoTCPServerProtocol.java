@@ -135,6 +135,11 @@ public class EchoTCPServerProtocol {
 			}
 			System.out.println(answer);
 			toNetwork.println(answer);
+			
+			System.out.println("\n\n--------TRANSACCIONES--------");
+			controlador.imprimirTransacciones();
+			System.out.println("\n\n");
+			
 		} while (confir == 0);
 	}
 

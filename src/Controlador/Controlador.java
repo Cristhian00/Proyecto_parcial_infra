@@ -185,5 +185,9 @@ public class Controlador {
 		return miBanco.leerArchivo(nombre);
 
 	}
+	
+	public void imprimirTransacciones() {
+		miBanco.imprimirTransacciones();
+	}
 
 }

@@ -1,13 +1,10 @@
 package vista;
 
-import java.awt.BorderLayout;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-
-import EchoTCPCliente_2.EchoTCPClienteProtocol;
 
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -192,10 +189,7 @@ public class VentanaCliente extends JFrame implements ActionListener {
 		bAceptar.setBounds(125, 417, 110, 25);
 		contentPane.add(bAceptar);
 
-		int aux = 0;
-		do {
-			bAceptar.addActionListener(this);
-		} while (aux == 0);
+		bAceptar.addActionListener(this);
 	}
 
 	private static void createStreams() throws IOException {
@@ -213,7 +207,7 @@ public class VentanaCliente extends JFrame implements ActionListener {
 			clienteSideSocket = new Socket(SERVER, PORT);
 			validarRadioButtons();
 			clienteSideSocket.close();
-
+			System.exit(0);
 		} catch (Exception excep) {
 			System.out.println(excep.getMessage());
 		}
@@ -223,7 +217,6 @@ public class VentanaCliente extends JFrame implements ActionListener {
 
 		createStreams();
 
-		String operacion = "";
 		String numCuenta = "";
 		String aux = "";
 		String fromUser = "";
@@ -235,23 +228,23 @@ public class VentanaCliente extends JFrame implements ActionListener {
 
 		if (rB1.isSelected()) {
 			aux = JOptionPane.showInputDialog("Ingrese su nombre y apellido");
-			operacion = "ABRIR_CUENTA," + aux;
+			fromUser = "ABRIR_CUENTA," + aux;
 		} else if (rB2.isSelected()) {
 			numCuenta = JOptionPane.showInputDialog("Ingrese el número de la cuenta de ahorros");
-			operacion = "ABRIR_BOLSILLO," + numCuenta;
+			fromUser = "ABRIR_BOLSILLO," + numCuenta;
 		} else if (rB3.isSelected()) {
 			numCuenta = JOptionPane.showInputDialog("Ingrese el número del bolsillo a cancelar");
-			operacion = "CANCELAR_BOLSILLO," + numCuenta;
+			fromUser = "CANCELAR_BOLSILLO," + numCuenta;
 		} else if (rB4.isSelected()) {
 			numCuenta = JOptionPane.showInputDialog("Ingrese el número de la cuenta de ahorros a cancelar");
-			operacion = "CANCELAR_CUENTA," + numCuenta;
+			fromUser = "CANCELAR_CUENTA," + numCuenta;
 		} else if (rB5.isSelected()) {
 			numCuenta = JOptionPane.showInputDialog("Ingrese el número de la cuenta de ahorros");
 			while (ban) {
 				try {
 					valor = Double.parseDouble(JOptionPane.showInputDialog("Ingrese el valor que desea depositar"));
 					ban = false;
-					operacion = "DEPOSITAR," + numCuenta + "," + valor;
+					fromUser = "DEPOSITAR," + numCuenta + "," + valor;
 				} catch (NumberFormatException e) {
 					JOptionPane.showMessageDialog(null, "Debe ingresar solo números");
 				}
@@ -262,7 +255,7 @@ public class VentanaCliente extends JFrame implements ActionListener {
 				try {
 					valor = Double.parseDouble(JOptionPane.showInputDialog("Ingrese el valor que desea retirar"));
 					ban = false;
-					operacion = "RETIRAR," + numCuenta + "," + valor;
+					fromUser = "RETIRAR," + numCuenta + "," + valor;
 				} catch (NumberFormatException e) {
 					JOptionPane.showMessageDialog(null, "Debe ingresar solo números");
 				}
@@ -274,20 +267,20 @@ public class VentanaCliente extends JFrame implements ActionListener {
 					valor = Double.parseDouble(
 							JOptionPane.showInputDialog("Ingrese el valor que desea trasladar al bolsillo"));
 					ban = false;
-					operacion = "TRASLADAR," + numCuenta + "," + valor;
+					fromUser = "TRASLADAR," + numCuenta + "," + valor;
 				} catch (NumberFormatException e) {
 					JOptionPane.showMessageDialog(null, "Debe ingresar solo números");
 				}
 			}
 		} else if (rB8.isSelected()) {
 			numCuenta = JOptionPane.showInputDialog("Ingrese el número de la cuenta a consular saldo");
-			operacion = "CONSULTAR," + numCuenta;
+			fromUser = "CONSULTAR," + numCuenta;
 		} else if (rB9.isSelected()) {
 
-			fromUser = JOptionPane.showInputDialog("Escriba el nombre del archivo");
-			operacion = 0 + ",CARGA," + fromUser;
+			aux = JOptionPane.showInputDialog("Escriba el nombre del archivo");
+			fromUser = 0 + ",CARGA," + aux;
 
-			toNetwork.println(operacion);
+			toNetwork.println(fromUser);
 
 			fromServer = fromNetwork.readLine();
 
@@ -297,42 +290,41 @@ public class VentanaCliente extends JFrame implements ActionListener {
 			for (int i = 0; i < lista.length; i++) {
 
 				oper = lista[i].split(",")[0];
-				System.out.println("LIne = " + lista[i] + " --- Oper = " + oper);
 
 				switch (oper) {
 				case "ABRIR_CUENTA":
-					operacion = lista[i];
+					fromUser = lista[i];
 					break;
 				case "ABRIR_BOLSILLO":
-					operacion = lista[i];
+					fromUser = lista[i];
 					break;
 				case "CANCELAR_BOLSILLO":
-					operacion = lista[i];
+					fromUser = lista[i];
 					break;
 				case "CANCELAR_CUENTA":
-					operacion = lista[i];
+					fromUser = lista[i];
 					break;
 				case "DEPOSITAR":
-					operacion = lista[i];
+					fromUser = lista[i];
 					break;
 				case "RETIRAR":
-					operacion = lista[i];
+					fromUser = lista[i];
 					break;
 				case "TRASLADAR":
-					operacion = lista[i];
+					fromUser = lista[i];
 					break;
 				case "CONSULTAR":
-					operacion = lista[i];
+					fromUser = lista[i];
 					break;
 				default:
-					System.out.println("Ninguna opción se seleeciono");
+					System.out.println("[Client] Ninguna opción se seleeciono");
 					break;
 				}
 
-				toNetwork.println(0 + "," + operacion);
+				toNetwork.println(0 + "," + fromUser);
 
 				fromServer = fromNetwork.readLine();
-				JOptionPane.showMessageDialog(null, "[Client] from server: " + fromServer);
+				System.out.println("[Client] from server: " + fromServer);
 
 			}
 			centinela = true;
@@ -342,20 +334,19 @@ public class VentanaCliente extends JFrame implements ActionListener {
 		}
 
 		ban = true;
-		if (centinela == false && !operacion.isEmpty()) {
+		if (centinela == false && !fromUser.isEmpty()) {
+
 			confir = JOptionPane.showConfirmDialog(null, "¿Desea realizar otra operación?");
-			toNetwork.println(confir + "," + operacion);
+			toNetwork.println(confir + "," + fromUser);
 
 			fromServer = fromNetwork.readLine();
 			JOptionPane.showMessageDialog(null, fromServer);
 			System.out.println("[Client] from server:" + fromServer);
-			grupoRadios.clearSelection();
-
-		} else {
+			
+		} else if (centinela == true) {
 			JOptionPane.showMessageDialog(null, "Se cargaron todos los datos del archivo");
-			centinela = false;
-			ban = false;
 		}
+
 		return confir;
 	}
 }

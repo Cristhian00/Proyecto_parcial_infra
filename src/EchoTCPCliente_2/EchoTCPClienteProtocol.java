@@ -96,7 +96,6 @@ public class EchoTCPClienteProtocol {
 							for (int i = 0; i < lista.length; i++) {
 
 								oper = lista[i].split(",")[0];
-								System.out.println("LIne = " + lista[i] + " --- Oper = " + oper);
 
 								switch (oper) {
 								case "ABRIR_CUENTA":

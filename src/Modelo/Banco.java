@@ -11,6 +11,7 @@ public class Banco {
 	private ArrayList<CuentaAhorro> listaCuentaAhorros;
 	private ArrayList<Bolsillo> listaBolsillo;
 	private int numeroCuenta;
+	private int numTransaccion;
 	private HashMap<String, Transaccion> transacciones;
 	private LeerArchivo miArchivo;
 
@@ -19,6 +20,7 @@ public class Banco {
 		this.listaCuentaAhorros = new ArrayList<CuentaAhorro>();
 		this.listaBolsillo = new ArrayList<Bolsillo>();
 		this.numeroCuenta = 0;
+		this.numTransaccion = 1;
 		this.transacciones = new HashMap<String, Transaccion>();
 		this.miArchivo = new LeerArchivo();
 	}
@@ -45,6 +47,14 @@ public class Banco {
 
 	public void setNumeroCuenta(int numeroCuenta) {
 		this.numeroCuenta = numeroCuenta;
+	}
+
+	public int getNumTransaccion() {
+		return numTransaccion;
+	}
+
+	public void setNumTransaccion(int numTransaccion) {
+		this.numTransaccion = numTransaccion;
 	}
 
 	public HashMap<String, Transaccion> getTransacciones() {
@@ -76,7 +86,7 @@ public class Banco {
 
 		registraTransaccion(numCuenta, "CANCELAR_CUENTA");
 
-		//imprimirDatos();
+		// imprimirDatos();
 	}
 
 	public void depositarDinero(String numCuenta, double saldo) {
@@ -160,7 +170,7 @@ public class Banco {
 			}
 		}
 		registraTransaccion(numCuenta, "ABRIR_BOLSILLO");
-		//imprimirDatos();
+		// imprimirDatos();
 	}
 
 	public void eliminarBosillo(String numCuenta, String numBolsillo) {
@@ -185,7 +195,7 @@ public class Banco {
 		}
 
 		registraTransaccion(numCuenta, "CANCELAR_BOLSILLO");
-		//imprimirDatos();
+		// imprimirDatos();
 	}
 
 	public double consultarSaldoBolsillo(String numBolsillo) {
@@ -226,9 +236,17 @@ public class Banco {
 
 	public void registraTransaccion(String numCuenta, String nombre) {
 
+		String key = getNumTransaccion() + "-" + numCuenta;
 		Date fecha = new Date();
 		Transaccion t = new Transaccion(nombre, fecha);
-		getTransacciones().put(numCuenta, t);
+		getTransacciones().put(key, t);
+		setNumTransaccion(getNumTransaccion() + 1);
+	}
+
+	public void imprimirTransacciones() {
+
+		getTransacciones().forEach(
+				(k, v) -> System.out.println("Key: " + k + ": Value: " + v.getNombre() + " - " + v.getFecha()));
 	}
 
 	public void imprimirDatos() {
@@ -242,6 +260,7 @@ public class Banco {
 		for (Bolsillo b : listaBolsillo) {
 			System.out.println(b.getNumCuenta() + " - " + b.getSaldo());
 		}
+		System.out.println("");
 	}
 
 	public String leerArchivo(String nombre) {
