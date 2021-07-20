@@ -26,6 +26,7 @@ public class EchoTCPServerProtocol {
 		double valor = 0.0;
 		double saldo = 0.0;
 		int confir = 0;
+		
 		String message = "";
 		String answer = "";
 		String[] transaccion = new String[10];
