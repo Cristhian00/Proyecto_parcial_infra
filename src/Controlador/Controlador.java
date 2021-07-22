@@ -91,7 +91,7 @@ public class Controlador {
 
 		double salida = 0.0;
 		if (miBanco.existeCuentaAhorros(numCuenta)) {
-			salida = miBanco.consultarSaldoCuenta(numCuenta);
+			salida = miBanco.consultarSaldoCuentaSinTransaccion(numCuenta);
 		} else {
 			throw new Exception("Lo sentimos, la cuenta con número " + numCuenta + " no existe ");
 		}

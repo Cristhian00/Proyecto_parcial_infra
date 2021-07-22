@@ -115,6 +115,18 @@ public class Banco {
 		registraTransaccion(numCuenta, "CONSULTAR_SALDO_CUENTA");
 		return saldo;
 	}
+	
+	public double consultarSaldoCuentaSinTransaccion(String numCuenta) {
+
+		double saldo = 0.0;
+		for (int i = 0; i < listaCuentaAhorros.size(); i++) {
+
+			if (listaCuentaAhorros.get(i).getNumCuenta().equals(numCuenta)) {
+				saldo = listaCuentaAhorros.get(i).getSaldo();
+			}
+		}
+		return saldo;
+	}
 
 	public boolean existeCuentaAhorros(String numCuenta) {
 		boolean ban = false;
