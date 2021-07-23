@@ -7,6 +7,15 @@ import java.net.Socket;
 
 import javax.swing.JOptionPane;
 
+/**
+ * Clase encargada de la creación de la comunicación del menú que comunicará
+ * el cliente con el servidor, mostrándole una lista de opciones las 
+ * cuales el cliente dando el debido comando podrá realizar una acción
+ * de las que está en dicho menú.
+ * 
+ * @author Tatiana Arboleda, Cristhian Ortiz y Diego Valencia
+ *
+ */
 public class EchoTCPClienteProtocol {
 
 	private static PrintWriter toNetwork;
@@ -168,6 +177,12 @@ public class EchoTCPClienteProtocol {
 
 	}
 
+	/**
+	 * Método encargado de crear la transmision de los sockets para su comunicación y
+	 * envío y recepción de información
+	 * @param socket
+	 * @throws Exception
+	 */
 	private static void createStreams(Socket socket) throws Exception {
 		toNetwork = new PrintWriter(socket.getOutputStream(), true);
 		fromNetwork = new BufferedReader(new InputStreamReader(socket.getInputStream()));
