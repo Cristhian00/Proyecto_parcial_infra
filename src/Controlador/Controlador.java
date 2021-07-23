@@ -276,7 +276,7 @@ public class Controlador {
 	 * Método encargado de recibir un archivo para previamente ser leído
 	 * 
 	 * @param nombre
-	 * @return
+	 * @return el archivo con sus respectivas acciones
 	 * @throws Exception
 	 */
 	public String leerArchivo(String nombre) throws Exception {

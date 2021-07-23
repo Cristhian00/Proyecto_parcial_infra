@@ -2,6 +2,12 @@ package Modelo;
 
 import javax.swing.JOptionPane;
 
+/**
+ * CLase encargada de mostrar menú y capturar la opción dada
+ * 
+ * @author Tatiana Arboleda, Diego Valencia y Cristhian Ortiz
+ *
+ */
 public class Principal {
 
 	public static void main(String[] args) {
