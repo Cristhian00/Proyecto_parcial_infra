@@ -2,6 +2,13 @@ package Modelo;
 
 import java.util.Date;
 
+/**
+ * Clase de tipo Transacción encargada de guardar el nombre de la transacción
+ * realizada y la fecha
+ * 
+ * @author Tatiana Arboleda, Cristhian Ortiz y Diego Valencia
+ *
+ */
 public class Transaccion {
 	private String nombre;
 	private Date fecha;
@@ -11,7 +18,8 @@ public class Transaccion {
 		this.nombre = nombre;
 		this.fecha = fecha;
 	}
-
+	
+	//**************************************GETS AND SETS****************************************
 	public String getNombre() {
 		return nombre;
 	}

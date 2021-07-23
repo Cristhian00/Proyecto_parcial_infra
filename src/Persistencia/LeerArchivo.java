@@ -5,6 +5,12 @@ import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
 
+/**
+ * Clase encargada de leer un archivo enviado
+ * 
+ * @author Tatiana Arboleda, Cristhian Ortiz y Diego Valencia
+ *
+ */
 public class LeerArchivo {
 
 	public String leerArchivo(String nombre) {
