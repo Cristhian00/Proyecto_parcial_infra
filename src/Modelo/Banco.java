@@ -34,10 +34,10 @@ public class Banco {
 	}
 
 
-	// ******************************CRUD Y OTROS MÉTODOS DE CUENTA*************************************
+	// ******************************CRUD Y OTROS MÃ‰TODOS DE CUENTA*************************************
 
 	/**
-	 * Método encargado de crear una cuenta de ahorro verificando que la cuenta no
+	 * MÃ©todo encargado de crear una cuenta de ahorro verificando que la cuenta no
 	 * sea repetida y tambien que la cuenta exista
 	 * 
 	 * @param cuenta
@@ -54,8 +54,8 @@ public class Banco {
 	}
 	
 	/**
-	 * Método encargado de consultar el saldo de una cuenta consultando por su
-	 * número correspondiente, eso sí, la cuenta debe de existir
+	 * MÃ©todo encargado de consultar el saldo de una cuenta consultando por su
+	 * nÃºmero correspondiente, eso sÃ­, la cuenta debe de existir
 	 * 
 	 * @param numCuenta
 	 * @return numero de saldo que tiene la cuenta a consultar
@@ -75,7 +75,7 @@ public class Banco {
 	}
 
 	/**
-	 * Método encargado de eliminar una cuenta dado su numero correspondiente, la
+	 * MÃ©todo encargado de eliminar una cuenta dado su numero correspondiente, la
 	 * cuenta debe de existir y no tener dinero en ella
 	 * 
 	 * @param numCuenta
@@ -96,7 +96,7 @@ public class Banco {
 	}
 	
 	/**
-	 * Método encargado de depositar dinero en una cuenta existente dado su numero
+	 * MÃ©todo encargado de depositar dinero en una cuenta existente dado su numero
 	 * correspondiente y el monto correspondiente
 	 * 
 	 * @param numCuenta
@@ -117,7 +117,12 @@ public class Banco {
 		registraTransaccion(numCuenta, "DEPOSITAR");
 	}
 
-	// PENDIENTE
+	/**
+	 * MÃ©todo encargado de mirar si la cuenta tiene saldo,sin necesidad de generar
+	 * una transaccion
+	 * @param numCuenta
+	 * @retun double con el valor del saldo que tiene la cuenta
+	 */
 
 	public double consultarSaldoCuentaSinTransaccion(String numCuenta) {
 
@@ -132,8 +137,8 @@ public class Banco {
 	}
 	
 	/**
-	 * Método encargado de realizar el proceso que es sacar dinero de una cuenta
-	 * dado el número y el monto a retirar siempre y cuando la cuenta exista
+	 * MÃ©todo encargado de realizar el proceso que es sacar dinero de una cuenta
+	 * dado el nÃºmero y el monto a retirar siempre y cuando la cuenta exista
 	 * 
 	 * @param numCuenta
 	 * @param saldo
@@ -153,8 +158,8 @@ public class Banco {
 	}
 
 	/**
-	 * Método encargado de informar si una cuenta existe dando su numero
-	 * correspondiente, en caso tal de que no exista el método retornará falso
+	 * MÃ©todo encargado de informar si una cuenta existe dando su numero
+	 * correspondiente, en caso tal de que no exista el mÃ©todo retornarÃ¡ falso
 	 * 
 	 * @param numCuenta
 	 * @return true si existe, false si no existe la cuenta
@@ -172,10 +177,10 @@ public class Banco {
 
 
 
-	// *******************************CRUD Y OTROS MÉTODOS DE BOLSILLO***********************************
+	// *******************************CRUD Y OTROS MÃ‰TODOS DE BOLSILLO***********************************
 
 	/**
-	 * Método encargado de crear un bolsillo verificando que la cuenta exista y que
+	 * MÃ©todo encargado de crear un bolsillo verificando que la cuenta exista y que
 	 * el numero de bolsillo no exista
 	 * 
 	 * @param cuenta
@@ -195,8 +200,8 @@ public class Banco {
 	}
 	
 	/**
-	 * Método encargado de consultar el saldo de un bosillo consultando por su
-	 * número correspondiente, eso sí; el bolsillo debe de existir
+	 * MÃ©todo encargado de consultar el saldo de un bosillo consultando por su
+	 * nÃºmero correspondiente, eso sÃ­; el bolsillo debe de existir
 	 * 
 	 * @param numBolsillo
 	 * @return numero de saldo que tiene el bolsillo a consultar
@@ -217,7 +222,7 @@ public class Banco {
 	}
 
 	/**
-	 * Método encargado de eliminar un bolsillo dado su npumero de cuenta y bolsillo
+	 * MÃ©todo encargado de eliminar un bolsillo dado su npumero de cuenta y bolsillo
 	 * correspondiente
 	 * 
 	 * @param numCuenta
@@ -251,8 +256,8 @@ public class Banco {
 
 
 	/**
-	 * Método encargado de informar si un bolsillo existe dando su numero
-	 * correspondiente, en caso tal de que no exista el método retornará falso
+	 * MÃ©todo encargado de informar si un bolsillo existe dando su numero
+	 * correspondiente, en caso tal de que no exista el mÃ©todo retornarÃ¡ falso
 	 * 
 	 * @param numBolsillo
 	 * @return true si existe, false si no existe el bolsillo
@@ -270,7 +275,7 @@ public class Banco {
 	
 
 	/**
-	 * Método encargado de consultar si un cliente existe dado su nombre
+	 * MÃ©todo encargado de consultar si un cliente existe dado su nombre
 	 * 
 	 * @param nombre
 	 * @return true si existe, false si no existe
@@ -287,7 +292,7 @@ public class Banco {
 	}
 	
 	/**
-	 * Método encargado de trasladar saldo de la cuenta a un bolsillo siempre y
+	 * MÃ©todo encargado de trasladar saldo de la cuenta a un bolsillo siempre y
 	 * cuando el saldo sea suficiente y la cuenta exista
 	 * 
 	 * @param numCuenta
@@ -317,7 +322,7 @@ public class Banco {
 
 	
 	/**
-	 * Método encargado de ir registrando las acciones a medida que van
+	 * MÃ©todo encargado de ir registrando las acciones a medida que van
 	 * transcurriendo teniendo en cuenta el nombre del cliente y el numero de cuenta
 	 * e irlas guardando en un contenedor
 	 * 
@@ -334,7 +339,7 @@ public class Banco {
 	}
 
 	/**
-	 * Método encargado de ir imprimiendo a medida que va aconteciendo
+	 * MÃ©todo encargado de ir imprimiendo a medida que va aconteciendo
 	 */
 	public void imprimirTransacciones() {
 
@@ -343,7 +348,7 @@ public class Banco {
 	}
 
 	/**
-	 * Método encargado de imprimir qué cuentas se encuentran y qué bolsillos están creados
+	 * MÃ©todo encargado de imprimir quÃ© cuentas se encuentran y quÃ© bolsillos estÃ¡n creados
 	 * para evidenciar de que se van creando correctamente 
 	 */
 	public void imprimirDatos() {
@@ -361,7 +366,7 @@ public class Banco {
 	}
 
 	/**
-	 * Método encargado de recibir un archivo para previamente ser leído
+	 * MÃ©todo encargado de recibir un archivo para previamente ser leÃ­do
 	 * 
 	 * @param nombre
 	 * @return el archivo con sus respectivas acciones
