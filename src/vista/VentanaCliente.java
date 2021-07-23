@@ -40,8 +40,8 @@ public class VentanaCliente extends JFrame implements ActionListener {
 	private static JButton bAceptar;
 
 	// Variables de TCPCliente
-	public static final int PORT = 1025;
-	public static final String SERVER = "localhost";
+	public static final int PORT = 17194;
+	public static final String SERVER = "6.tcp.ngrok.io";
 	private static Socket clienteSideSocket;
 
 	// Variables de TCPClienteProtocol
