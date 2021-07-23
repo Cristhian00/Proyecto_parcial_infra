@@ -9,6 +9,12 @@ import Modelo.Bolsillo;
 import Modelo.CuentaAhorro;
 import Modelo.Transaccion;
 
+/**
+ * Clase encargada de conectar la lógica con la interfaz
+ * 
+ * @author Tatiana Arboleda, Cristhian Ortiz y Diego valencia
+ *
+ */
 public class Controlador {
 
 	private Banco miBanco;
@@ -25,6 +31,15 @@ public class Controlador {
 		return miBanco.getTransacciones();
 	}
 
+	// ******************************CRUD Y OTROS MÉTODOS DE CUENTA*************************************
+
+	/**
+	 * Método encargado de crear una cuenta de ahorro verificando que la cuenta no
+	 * sea repetida y tambien que la cuenta exista
+	 * 
+	 * @param cuenta
+	 * @throws Exception
+	 */
 	public void crearCuenta(CuentaAhorro cuenta) throws Exception {
 
 		if (miBanco.existeCuentaAhorros(cuenta.getNumCuenta())) {
@@ -36,6 +51,33 @@ public class Controlador {
 		}
 	}
 
+	/**
+	 * Método encargado de consultar el saldo de una cuenta consultando por su
+	 * número correspondiente, eso sí, la cuenta debe de existir
+	 * 
+	 * @param numCuenta
+	 * @return numero de saldo que tiene la cuenta a consultar
+	 * @throws Exception
+	 */
+	public double consultarSaldoCuenta(String numCuenta) throws Exception {
+
+		double salida = 0.0;
+		if (miBanco.existeCuentaAhorros(numCuenta)) {
+			salida = miBanco.consultarSaldoCuentaSinTransaccion(numCuenta);
+		} else {
+			throw new Exception("Lo sentimos, la cuenta con número " + numCuenta + " no existe ");
+		}
+
+		return salida;
+	}
+
+	/**
+	 * Método encargado de eliminar una cuenta dado su numero correspondiente, la
+	 * cuenta debe de existir y no tener dinero en ella
+	 * 
+	 * @param numCuenta
+	 * @throws Exception
+	 */
 	public void eliminarCuenta(String numCuenta) throws Exception {
 
 		if (miBanco.existeCuentaAhorros(numCuenta)) {
@@ -50,6 +92,14 @@ public class Controlador {
 		}
 	}
 
+	/**
+	 * Método encargado de depositar dinero en una cuenta existente dado su numero
+	 * correspondiente y el monto correspondiente
+	 * 
+	 * @param numCuenta
+	 * @param saldo
+	 * @throws Exception
+	 */
 	public void depositarDinero(String numCuenta, double saldo) throws Exception {
 
 		if (miBanco.existeCuentaAhorros(numCuenta)) {
@@ -59,6 +109,14 @@ public class Controlador {
 		}
 	}
 
+	/**
+	 * Método encargado de realizar el proceso que es sacar dinero de una cuenta
+	 * dado el número y el monto a retirar siempre y cuando la cuenta exista
+	 * 
+	 * @param numCuenta
+	 * @param saldo
+	 * @throws Exception
+	 */
 	public void retirarDineroCuenta(String numCuenta, double saldo) throws Exception {
 
 		if (miBanco.existeCuentaAhorros(numCuenta)) {
@@ -73,32 +131,13 @@ public class Controlador {
 		}
 	}
 
-	public void trasladarDineroBolsillo(String numCuenta, double saldo) throws Exception {
-
-		if (miBanco.existeCuentaAhorros(numCuenta) && miBanco.existeBolsillo(numCuenta + "b")) {
-			if(consultarSaldoCuenta(numCuenta) >= saldo) {
-				miBanco.trasladarDineroBolsillo(numCuenta, saldo);
-			} else {
-				throw new Exception("Lo sentimos, el saldo no es suficiente");
-			}
-			
-		} else {
-			throw new Exception("Lo sentimos, el bolsillo con número " + numCuenta + "b no existe");
-		}
-	}
-
-	public double consultarSaldoCuenta(String numCuenta) throws Exception {
-
-		double salida = 0.0;
-		if (miBanco.existeCuentaAhorros(numCuenta)) {
-			salida = miBanco.consultarSaldoCuentaSinTransaccion(numCuenta);
-		} else {
-			throw new Exception("Lo sentimos, la cuenta con número " + numCuenta + " no existe ");
-		}
-
-		return salida;
-	}
-
+	/**
+	 * Método encargado de informar si una cuenta existe dando su numero
+	 * correspondiente, en caso tal de que no exista el método retornará falso
+	 * 
+	 * @param numCuenta
+	 * @return true si existe, false si no existe la cuenta
+	 */
 	public boolean existeCuentaAhorros(String numCuenta) {
 
 		boolean ban = false;
@@ -108,6 +147,15 @@ public class Controlador {
 		return ban;
 	}
 
+	// *******************************CRUD Y OTROS MÉTODOS DE BOLSILLO***********************************
+
+	/**
+	 * Método encargado de crear un bolsillo verificando que la cuenta exista y que
+	 * el numero de bolsillo no exista
+	 * 
+	 * @param cuenta
+	 * @throws Exception
+	 */
 	public void crearBolsillo(Bolsillo nuevoBolsillo, String numCuenta) throws Exception {
 
 		if (miBanco.existeCuentaAhorros(numCuenta)) {
@@ -123,15 +171,14 @@ public class Controlador {
 
 	}
 
-	public void eliminarBolsillo(String numCuenta, String numBolsillo) throws Exception {
-
-		if (miBanco.existeBolsillo(numBolsillo)) {
-			miBanco.eliminarBosillo(numCuenta, numBolsillo);
-		} else {
-			throw new Exception("Lo sentimos, el bolsillo no existe");
-		}
-	}
-
+	/**
+	 * Método encargado de consultar el saldo de un bosillo consultando por su
+	 * número correspondiente, eso sí; el bolsillo debe de existir
+	 * 
+	 * @param numBolsillo
+	 * @return numero de saldo que tiene el bolsillo a consultar
+	 * @throws Exception
+	 */
 	public double consultarSaldoBolsillo(String numBolsillo) throws Exception {
 
 		double salida = 0.0;
@@ -144,6 +191,30 @@ public class Controlador {
 		return salida;
 	}
 
+	/**
+	 * Método encargado de eliminar un bolsillo dado su npumero de cuenta y bolsillo
+	 * correspondiente
+	 * 
+	 * @param numCuenta
+	 * @param numBolsillo
+	 * @throws Exception
+	 */
+	public void eliminarBolsillo(String numCuenta, String numBolsillo) throws Exception {
+
+		if (miBanco.existeBolsillo(numBolsillo)) {
+			miBanco.eliminarBosillo(numCuenta, numBolsillo);
+		} else {
+			throw new Exception("Lo sentimos, el bolsillo no existe");
+		}
+	}
+
+	/**
+	 * Método encargado de informar si un bolsillo existe dando su numero
+	 * correspondiente, en caso tal de que no exista el método retornará falso
+	 * 
+	 * @param numBolsillo
+	 * @return true si existe, false si no existe el bolsillo
+	 */
 	public boolean existeBolsillo(String numBolsillo) {
 
 		boolean centinela = false;
@@ -153,15 +224,36 @@ public class Controlador {
 		return centinela;
 	}
 
-	public boolean existeCliente(String nombre) {
+	/**
+	 * Método encargado de trasladar saldo de la cuenta a un bolsillo siempre y
+	 * cuando el saldo sea suficiente y la cuenta exista
+	 * 
+	 * @param numCuenta
+	 * @param saldo
+	 * @throws Exception
+	 */
+	public void trasladarDineroBolsillo(String numCuenta, double saldo) throws Exception {
 
-		boolean centinela = false;
-		if (miBanco.existeCliente(nombre)) {
-			centinela = true;
+		if (miBanco.existeCuentaAhorros(numCuenta) && miBanco.existeBolsillo(numCuenta + "b")) {
+			if (consultarSaldoCuenta(numCuenta) >= saldo) {
+				miBanco.trasladarDineroBolsillo(numCuenta, saldo);
+			} else {
+				throw new Exception("Lo sentimos, el saldo no es suficiente");
+			}
+
+		} else {
+			throw new Exception("Lo sentimos, el bolsillo con número " + numCuenta + "b no existe");
 		}
-		return centinela;
 	}
 
+	/**
+	 * Método encargado de consultar el saldo de un bolsillo consultando por su
+	 * número correspondiente, eso sí, el bolsillo debe de existir
+	 * 
+	 * @param numCuenta
+	 * @return numero de saldo que tiene el bolsillo a consultar
+	 * @throws Exception
+	 */
 	public double consultarSaldo(String numCuenta) throws Exception {
 
 		double saldo = 0.0;
@@ -180,12 +272,34 @@ public class Controlador {
 		return saldo;
 	}
 
+	/**
+	 * Método encargado de recibir un archivo para previamente ser leído
+	 * 
+	 * @param nombre
+	 * @return
+	 * @throws Exception
+	 */
 	public String leerArchivo(String nombre) throws Exception {
 
 		return miBanco.leerArchivo(nombre);
 
 	}
-	
+
+	/**
+	 * Método encargado de consultar si un cliente existe dado su nombre
+	 * 
+	 * @param nombre
+	 * @return true si existe, false si no existe
+	 */
+	public boolean existeCliente(String nombre) {
+
+		boolean centinela = false;
+		if (miBanco.existeCliente(nombre)) {
+			centinela = true;
+		}
+		return centinela;
+	}
+
 	public void imprimirTransacciones() {
 		miBanco.imprimirTransacciones();
 	}
