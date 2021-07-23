@@ -11,12 +11,26 @@ import Controlador.Controlador;
 import Modelo.Bolsillo;
 import Modelo.CuentaAhorro;
 
+/**
+ * Clase encargada de recibir e interpretar los mensajes que llegan a través del
+ * socket escucha
+ * 
+ * @author TATIANA
+ *
+ */
 public class EchoTCPServerProtocol {
 
 	private static PrintWriter toNetwork;
 	private static BufferedReader fromNetwork;
 	private static Controlador controlador = new Controlador();
 
+	/**
+	 * Método encargado de crear la escucha recibiendo un socket para poder permitir
+	 * la transmisión de información e interpretar cada una de sus acciones
+	 * 
+	 * @param socket
+	 * @throws IOException
+	 */
 	public static void protocol(Socket socket) throws IOException {
 
 		createStreams(socket);
@@ -35,7 +49,6 @@ public class EchoTCPServerProtocol {
 		do {
 
 			message = fromNetwork.readLine();
-			
 
 			if (message != null) {
 				System.out.println("[SERVER] from client: " + message);
@@ -149,7 +162,7 @@ public class EchoTCPServerProtocol {
 				System.out.println("\n\n--------TRANSACCIONES--------");
 				controlador.imprimirTransacciones();
 				System.out.println("\n\n");
-				
+
 			} else {
 				System.out.println("ERROR");
 			}
@@ -165,6 +178,13 @@ public class EchoTCPServerProtocol {
 	 * } }
 	 */
 
+	/**
+	 * Método encargado de crear la transmisión del mensaje, recibir y enviar
+	 * información que entra y sale de la comunicación
+	 * 
+	 * @param socket
+	 * @throws IOException
+	 */
 	private static void createStreams(Socket socket) throws IOException {
 		toNetwork = new PrintWriter(socket.getOutputStream(), true);
 		fromNetwork = new BufferedReader(new InputStreamReader(socket.getInputStream()));
