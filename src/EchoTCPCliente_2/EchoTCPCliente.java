@@ -11,8 +11,8 @@ import java.net.Socket;
  */
 public class EchoTCPCliente {
 
-	public static final int PORT = 18862;
-	public static final String SERVER = "8.tcp.ngrok.io";
+	public static final int PORT = 1025;
+	public static final String SERVER = "localhost";
 
 	private Socket clienteSideSocket;
 
